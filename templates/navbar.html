@@ -1,0 +1,55 @@
+{% load static %}
+{% load cart_template_tags %}
+<header class="main-header">
+
+  <div class="wrapper" id="logo">
+    <div id="hamburger"></div>
+    <a href="/" title="Home" rel="home" class="mainlogo" aria-label="RADO Switzerland">
+      <img src="{% static 'css/images/logo.png' %}" alt="Achia">
+    </a>
+
+    <nav class="main-page-navigation">
+      <div class="menu-wrapper">
+
+
+
+        <div class="ecomm-block__main-menu" role="navigation">
+          <ul class="nav__list nav__list__first js-nav__list__first">
+            <li class="nav__item  mobile-only underline first-level"><a href="/"
+                class="mobile-only underline active nav__list__level1" role="region" aria-expanded="false"
+                aria-hidden="true">Home</a></li>
+
+
+            <li class="nav__item nav__item__slider underline parent first-level"><a href="" class="underline parent"
+                role="button" aria-controls="accessible-megamenu-1611034614978-5" aria-expanded="false"
+                tabindex="0">Collections</a><button class="dropdown-toggle"></button>
+
+            </li>
+            <li class="nav__item  underline parent first-level"><a href="/about" class="underline parent" role="button"
+                aria-controls="accessible-megamenu-1611034614981-7" aria-expanded="false" tabindex="0">About
+                Achia</a><button class="dropdown-toggle"></button>
+            </li>
+
+            {% if request.user.is_authenticated %}
+
+            <li class="nav__item  underline first-level"><a href="{% url 'core:order-summary' %}"
+                class="underline"><span class="badge red z-depth-1 mr-1"> {{ request.user|cart_item_count }} </span>
+                <i class="fas fa-shopping-cart"></i> Cart</a></li>
+            <li class="nav__item  underline first-level"><a href="{% url 'account_logout' %}" class="underline"><span
+                  class="clearfix d-none d-sm-inline-block"> Logout
+                </span></a></li>
+            {% else %}
+
+            <li class="nav__item  underline first-level"><a href="{% url 'account_login' %}" class="underline"><span
+                  class="clearfix d-none d-sm-inline-block"> Login
+                </span></a></li>
+
+            {% endif %}
+
+          </ul>
+
+        </div>
+    </nav>
+  </div>
+</header>
+<!-- Right -->

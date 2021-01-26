@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+  <div class="wrapper-homepage">
+    <div
+    class="paragraphs-items paragraphs-items-field-paragraph-item paragraphs-items-field-paragraph-item-full paragraphs-items-full pure-g stretch">
+    <div class="footer-cta-container pure-u-1 ecomm-section-margin-top">
+      
+      <div class="wrapper wrapper-single wrapper-center">
+          {% for item in object_list %}
+          <a class="notext card block footer-cta" target="" href="{{ item.get_absolute_url }}" aria-label="_category label_">
+            <div class="cover lazyloaded" role="img" style="background-image: url({{ item.image.url }});">
+              <picture style="display: none;">
+                <img alt="{{ item.image.url }}" class="lazyautosizes lazyloaded" data-sizes="auto" data-parent-fit="cover" sizes="416px">
+              </picture>
+            </div>
+
+            <div class="overlay">
+
+            </div>
+
+            <div class="label">
+              <div class="caption">
+                {{ item.title }}</div>
+            </div>
+            <span class="arrow-right"></span>
+          </a>
+          {% endfor %}
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!--Section: Products v.3-->
+
+  <!--Pagination-->
+
+  {% if is_paginated %}
+  <nav class="d-flex justify-content-center wow fadeIn">
+    <ul class="pagination pg-blue">
+
+      {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      {% endif %}
+
+      <li class="page-item active">
+        <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+
+      {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+
+</main>
+
+{% endblock content %}

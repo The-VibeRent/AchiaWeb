@@ -1,0 +1,32 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<div class="text-center">
+  <h1 class="h4 text-gray-900 mb-4">{% trans "Sign Up" %}</h1>
+</div>
+
+
+<form class="well" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  {% csrf_token %}
+  {% load bootstrap3 %}
+  {% bootstrap_form form %}
+  {% if redirect_field_value %}
+  <div class="form-group row">
+    <input class="form-control form-control-user" type="{{ redirect_field_name }}" name="{{ redirect_field_name }}"
+      value="{{ redirect_field_value }}" />
+  </div>
+  {% endif %}
+  <button class="btn btn-primary btn-user btn-block" type="submit">{% trans "Sign Up" %} &raquo;</button>
+</form>
+<hr>
+<div class="text-center">
+  {% blocktrans %}
+  <a class="small" href="{{ login_url }}">Already have an account? Login!</a>
+  {% endblocktrans %}
+</div>
+
+{% endblock %}
