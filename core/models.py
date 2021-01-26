@@ -5,7 +5,6 @@ from django.db.models import Sum
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
-
 CATEGORY_CHOICES = (
     ('S', 'Shirt'),
     ('SW', 'Sport wear'),
@@ -22,7 +21,19 @@ ADDRESS_CHOICES = (
     ('B', 'Billing'),
     ('S', 'Shipping'),
 )
+CONDITION_CHOICES = (
+    ('N', 'New'),
+    ('U', 'Used'),
+)
 
+COLOR_CHOICES = (
+    ('R', 'Red'),
+    ('B', 'Blue'),
+)
+SIZE_CHOICES = (
+    ('A', '36'),
+    ('B', '37'),
+)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
@@ -35,17 +46,22 @@ class UserProfile(models.Model):
 
 
 class Item(models.Model):
-    title = models.CharField(max_length=100)
-    price = models.FloatField()
-    discount_price = models.FloatField(blank=True, null=True)
+    id = models.IntegerField(primary_key=True)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
-    label = models.CharField(choices=LABEL_CHOICES, max_length=1)
-    slug = models.SlugField()
-    description = models.TextField()
+    name = models.CharField(max_length=100)
+    rating = models.IntegerField(default=2)
     image = models.ImageField()
+    description = models.TextField()
+    size = models.CharField(choices=SIZE_CHOICES,max_length=1,blank=True, null=True)
+    condition = models.CharField(choices=CONDITION_CHOICES,max_length=1,blank=True, null=True)
+    color = models.CharField(choices=COLOR_CHOICES,max_length=1,blank=True, null=True)
+    price = models.FloatField()
+    keywords = models.CharField(choices=LABEL_CHOICES, max_length=1)
+    discount_price = models.FloatField(blank=True, null=True)
+    slug = models.SlugField()
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def get_absolute_url(self):
         return reverse("core:product", kwargs={
@@ -71,7 +87,7 @@ class OrderItem(models.Model):
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
-        return f"{self.quantity} of {self.item.title}"
+        return f"{self.quantity} of {self.item.name}"
 
     def get_total_item_price(self):
         return self.quantity * self.item.price
