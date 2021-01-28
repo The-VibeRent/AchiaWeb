@@ -1,55 +1,235 @@
 {% load static %}
 {% load cart_template_tags %}
-<header class="main-header">
 
-  <div class="wrapper" id="logo">
-    <div id="hamburger"></div>
-    <a href="/" title="Home" rel="home" class="mainlogo" aria-label="RADO Switzerland">
-      <img src="{% static 'css/images/logo.png' %}" alt="Achia">
-    </a>
+{% if request.user.is_authenticated %}
+<nav class="navbar navbar-sticky fixed-top navbar-expand-lg py-2">
+  <div class="container">
 
-    <nav class="main-page-navigation">
-      <div class="menu-wrapper">
+      <a class="navbar-brand text-dark" href="/">
+          <i class="icon icon-layers"></i>
+          <strong>Achia</strong>
+      </a>
+
+      <div class="d-flex d-lg-none">
+          <ul class="navbar-nav flex-row">
+              <li class="nav-item">
+                  <a href="{% url 'account_logout' %}" class="d-flex nav-link" data-show="loginComponent">
+                      <div class="px-2 py-1">Logout</div>
+                  </a>
+              </li>
+              <li class="nav-item">
+                  <a href="#" class="d-flex nav-link toggle-show" data-show="cartComponent">
+                      <div class="px-2 py-1">Cart <sup>{{ request.user|cart_item_count }}</sup></div>
+                  </a>
+              </li>
+          </ul>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="furnitureNavbar" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="icon icon-menu"></span>
+          </button>
+      </div>
+
+      <!-- Navbar collapse -->
+
+      <div class="navbar-collapse collapse navbar-collapse-sidebar" id="mainNavbar">
+
+          <div class="d-block d-lg-none">
+              <div class="p-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                          <i class="icon icon-layers"></i>
+                          <strong>Achia</strong>
+                      </div>
+                      <button class="btn p-0" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="icon icon-cross font-size-lg"></span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <ul class="navbar-nav ml-auto align-items-lg-center">
+              <li class="nav-item active">
+                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item dropdown px-lg-3">
+                  <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Shop
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdown-shop">
+                      <a class="dropdown-item" href="#">Shop</a>
+                      <a class="dropdown-item" href="#">Product</a>
+                      <a class="dropdown-item" href="#">Checkout</a>
+                  </div>
+              </li>
+              <li class="nav-item px-lg-3">
+                  <a class="nav-link" href="#">Collection</a>
+              </li>
+             
+              <li class="nav-item d-none d-lg-inline ml-lg-5">
+                  <a href="{% url 'account_logout' %}" class="nav-link">
+                      <span class="icon icon-user"></span>
+                  </a>
+              </li>
+              <li class="nav-item d-none d-lg-inline">
+                  <a href="#" class="nav-link d-flex toggle-show" data-show="cartComponent">
+                      <div class="px-2 py-1">
+                          <span class="icon icon-cart"></span>
+                          <sup>{{ request.user|cart_item_count }}</sup>
+                      </div>
+                  </a>
+              </li>
+             
+          </ul>
+      </div>
+
+  </div>
+</nav>
 
 
+<!-- Sidebar cart -->
 
-        <div class="ecomm-block__main-menu" role="navigation">
-          <ul class="nav__list nav__list__first js-nav__list__first">
-            <li class="nav__item  mobile-only underline first-level"><a href="/"
-                class="mobile-only underline active nav__list__level1" role="region" aria-expanded="false"
-                aria-hidden="true">Home</a></li>
+<nav id="cartComponent" class="sidebar sidebar-right bg-white border-left">
+  <div class="sidebar-content">
 
+      <!-- Sidebar header -->
 
-            <li class="nav__item nav__item__slider underline parent first-level"><a href="" class="underline parent"
-                role="button" aria-controls="accessible-megamenu-1611034614978-5" aria-expanded="false"
-                tabindex="0">Collections</a><button class="dropdown-toggle"></button>
+      <div class="sidebar-header px-3 pt-3">
+          <button type="button" class="toggle-show" data-show="cartComponent">
+              <span class="icon icon-cross"></span>
+          </button>
+          <div>Shopping cart</div>
+      </div>
 
-            </li>
-            <li class="nav__item  underline parent first-level"><a href="/about" class="underline parent" role="button"
-                aria-controls="accessible-megamenu-1611034614981-7" aria-expanded="false" tabindex="0">About
-                Achia</a><button class="dropdown-toggle"></button>
-            </li>
+      <hr />
 
-            {% if request.user.is_authenticated %}
+      <!-- Sidebar items -->
 
-            <li class="nav__item  underline first-level"><a href="{% url 'core:order-summary' %}"
-                class="underline"><span class="badge red z-depth-1 mr-1"> {{ request.user|cart_item_count }} </span>
-                <i class="fas fa-shopping-cart"></i> Cart</a></li>
-            <li class="nav__item  underline first-level"><a href="{% url 'account_logout' %}" class="underline"><span
-                  class="clearfix d-none d-sm-inline-block"> Logout
-                </span></a></li>
-            {% else %}
+      <div>
+          <ul class="list-group list-group-flush mb-3">
+            {% for order_item in order %}
+              <li class="list-group-item p-4">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col-md-2 mb-2 mb-lg-0">
+                          <img src="{{ order_item.item.image.url }}" alt="" class="img-fluid br-sm" />
+                      </div>
+                      <div class="col-md-6 pl-md-2 mb-2 mb-lg-0">
+                          <p class="my-0">{{ order_item.item.title}}</p>
+                          <small class="text-muted">{{ order_item.item.description}}</small>
+                      </div>
+                      <div class="col-6 col-md-2">
+                          <input type="number" value="2" class="form-control form-control-sm" />
+                      </div>
+                      <div class="col-6 col-md-2 text-right text-muted">
+                          <div>Rs{{ order_item.get_final_price }}</div>
+                          <small><del>$1499</del></small>
+                      </div>
+                  </div>
+              </li>
+              {% endfor %}
+              <li class="list-group-item p-4 bg-light text-muted">
+                  <div class="d-flex justify-content-between">
+                      <div>
+                          <small>Promocode: EXAMPLECODE</small>
+                      </div>
+                      <span>-$500</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                      <div>
+                          <small>Discount 15%</small>
+                      </div>
+                      <span>-$15</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                      <div>
+                          <small>Shipping</small>
+                      </div>
+                      <span>$0</span>
+                  </div>
+              </li>
 
-            <li class="nav__item  underline first-level"><a href="{% url 'account_login' %}" class="underline"><span
-                  class="clearfix d-none d-sm-inline-block"> Login
-                </span></a></li>
-
-            {% endif %}
+              <li class="list-group-item p-4 d-flex justify-content-between">
+                  <strong>Total (USD)</strong>
+                  <strong>$ 1290,00</strong>
+              </li>
 
           </ul>
 
-        </div>
-    </nav>
+          <!-- Sidebar Buttons -->
+
+          <div class="row justify-content-center pt-3 m-0">
+              <div class="col-8">
+                  <button type="submit" class="btn btn-rounded btn-sm btn-block btn-dark px-5">Go to checkout</button>
+              </div>
+          </div>
+
+      </div>
+
   </div>
-</header>
-<!-- Right -->
+</nav>
+
+{% else %}
+<nav class="navbar navbar-sticky fixed-top navbar-expand-lg py-2">
+  <div class="container">
+      <a class="navbar-brand text-dark" href="#">
+          <i class="icon icon-layers"></i>
+          <strong>Achia</strong>
+      </a>
+      <div class="d-flex d-lg-none">
+          <ul class="navbar-nav flex-row">
+              <li class="nav-item">
+                  <a href="{% url 'account_login' %}" class="d-flex nav-link">
+                      <div class="px-2 py-1">Login</div>
+                  </a>
+              </li>
+          </ul>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="furnitureNavbar" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="icon icon-menu"></span>
+          </button>
+      </div>
+
+      <!-- Navbar collapse -->
+
+      <div class="navbar-collapse collapse navbar-collapse-sidebar" id="mainNavbar">
+
+          <div class="d-block d-lg-none">
+              <div class="p-3">
+                  <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                          <i class="icon icon-layers"></i>
+                          <strong>Achia</strong>
+                      </div>
+                      <button class="btn p-0" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="icon icon-cross font-size-lg"></span>
+                      </button>
+                  </div>
+              </div>
+          </div>
+
+          <ul class="navbar-nav ml-auto align-items-lg-center">
+              <li class="nav-item active">
+                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item dropdown px-lg-3">
+                  <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Shop
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdown-shop">
+                      <a class="dropdown-item" href="#">Shop</a>
+                      <a class="dropdown-item" href="#">Product</a>
+                      <a class="dropdown-item" href="#">Checkout</a>
+                  </div>
+              </li>
+              <li class="nav-item px-lg-3">
+                  <a class="nav-link" href="#">Collection</a>
+              </li>
+             
+              <li class="nav-item d-none d-lg-inline ml-lg-5">
+                  <a href="{% url 'account_login' %}" class="nav-link">
+                      <span class="icon icon-user"></span>
+                  </a>
+              </li>
+          </ul>
+      </div>
+
+  </div>
+</nav>
+{% endif %}
