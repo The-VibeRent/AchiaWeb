@@ -10,10 +10,17 @@
   <title>{% block head_title %}{% endblock %}</title>
   {% block extra_head %}
   {% endblock %}
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-  <!-- link href="{% static 'css/mdb.min.css' %}" rel="stylesheet"-->
-  <link href="{% static 'css/style.min.css' %}" rel="stylesheet">
+    <!-- Vendor stylesheets -->
+
+    <link rel="stylesheet" media="all" href="{% static 'css/vendor/animate.css' %}" />
+    <link rel="stylesheet" media="all" href="{% static 'css/vendor/font-awesome.css' %}" />
+    <link rel="stylesheet" media="all" href="{% static 'css/vendor/linear-icons.css' %}" />
+    <link rel="stylesheet" media="all" href="{% static 'css/vendor/owl.carousel.css' %}" />
+    <link rel="stylesheet" media="all" href="{% static 'css/vendor/jquery.lavalamp.css' %}" />
+
+    <!-- Template stylesheets -->
+
+    <link rel="stylesheet" media="all" href="{% static 'css/style.css' %}" />
 </head>
 
 {% include "navbar.html" %}
@@ -40,7 +47,21 @@
   {% endblock %}
 
   {% include "footer.html" %}
-  {% include "scripts.html" %}
+  <script src="{% static 'js/vendor/jquery.min.js' %}"></script>
+  <script src="{% static 'js/vendor/bootstrap.bundle.js' %}"></script>
+  <script src="{% static 'js/vendor/in-view.min.js' %}"></script>
+  <script src="{% static 'js/vendor/jquery.lavalamp.js' %}"></script>
+  <script src="{% static 'js/vendor/owl.carousel.js' %}"></script>
+  <script src="{% static 'js/vendor/rellax.js' %}"></script>
+  <script src="{% static 'js/vendor/wow.js' %}"></script>
+  <script src="{% static 'js/vendor/tabzy.js' %}"></script>
+  <script src="{% static 'js/vendor/isotope.pkgd.js' %}"></script>
+
+  <!-- Template Scripts -->
+
+  <script src="{% static 'js/main.js' %}"></script>
+  <script src="{% static 'js/custom.js' %}"></script>
+
 
   {% block extra_scripts %}
   {% endblock extra_scripts %}

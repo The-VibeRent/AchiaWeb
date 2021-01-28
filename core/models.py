@@ -50,7 +50,7 @@ class Item(models.Model):
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     name = models.CharField(max_length=100)
     rating = models.IntegerField(default=2)
-    image = models.ImageField()
+    image = models.ImageField(upload_to='uploads/')
     description = models.TextField()
     size = models.CharField(choices=SIZE_CHOICES,max_length=1,blank=True, null=True)
     condition = models.CharField(choices=CONDITION_CHOICES,max_length=1,blank=True, null=True)

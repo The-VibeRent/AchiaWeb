@@ -333,6 +333,15 @@ class HomeView(ListView):
     model = Item
     template_name = "home.html"
 
+    def get_context_data(self,**kwargs):
+        context = super(HomeView,self).get_context_data(**kwargs)
+        context.update({
+            'order': OrderItem.objects.all()
+        })
+        return context
+    def get_queryset(self):
+        return Item.objects.all()
+
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
