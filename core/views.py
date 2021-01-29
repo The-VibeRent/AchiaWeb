@@ -13,7 +13,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Banner
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -336,7 +336,11 @@ class HomeView(ListView):
     def get_context_data(self,**kwargs):
         context = super(HomeView,self).get_context_data(**kwargs)
         context.update({
-            'order': OrderItem.objects.all()
+            'order': OrderItem.objects.all(),
+            'primary': Item.objects.all().filter(keywords='P',)[:4],
+            'secondary': Item.objects.all().filter(keywords='S')[:4],
+            'danger': Item.objects.all().filter(keywords='D')[:4],
+            'banner': Banner.objects.all()[:3],
         })
         return context
     def get_queryset(self):
