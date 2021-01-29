@@ -1,6 +1,11 @@
 from django.contrib import admin
-
+from import_export.admin import ImportExportModelAdmin
+from import_export import resources
 from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile
+
+class ItemResource(resources.ModelResource):
+    class Meta:
+        model = Item
 
 
 def make_refund_accepted(modeladmin, request, queryset):
@@ -55,7 +60,10 @@ class AddressAdmin(admin.ModelAdmin):
     search_fields = ['user', 'street_address', 'apartment_address', 'zip']
 
 
-admin.site.register(Item)
+@admin.register(Item)
+class ItemAdmin(ImportExportModelAdmin):
+    pass
+
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)
