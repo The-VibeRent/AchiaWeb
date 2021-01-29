@@ -44,6 +44,11 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class Banner(models.Model):
+    quote=models.CharField(max_length=10)
+    image=models.ImageField(upload_to='banners/')
+    hastag1=models.CharField(max_length=20,default='Fresh')
+    hastag2=models.CharField(max_length=20,default='Trendy')
 
 class Item(models.Model):
     id = models.IntegerField(primary_key=True)
