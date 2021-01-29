@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile
+from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile,Banner
 
 class ItemResource(resources.ModelResource):
     class Meta:
@@ -64,6 +64,7 @@ class AddressAdmin(admin.ModelAdmin):
 class ItemAdmin(ImportExportModelAdmin):
     pass
 
+admin.site.register(Banner)
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)
