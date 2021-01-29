@@ -1,215 +1,5 @@
 {% load static %}
 {% load cart_template_tags %}
-<<<<<<< Updated upstream
-=======
-<nav class="navbar navbar-sticky fixed-top navbar-expand-lg py-2">
-  <div class="container">
-    <a class="navbar-brand text-dark" href="#">
-      <i class="icon icon-layers"></i>
-      <strong>Achia</strong>
-    </a>
-
-    <div class="d-flex d-lg-none">
-      <ul class="navbar-nav flex-row">
-        <li class="nav-item">
-          <a href="#" class="d-flex nav-link toggle-show" data-show="loginComponent">
-            <div class="px-2 py-1">Login</div>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="d-flex nav-link toggle-show" data-show="cartComponent">
-            <div class="px-2 py-1">Cart <sup>3</sup></div>
-          </a>
-        </li>
-
-      </ul>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
-        aria-controls="furnitureNavbar" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="icon icon-menu"></span>
-      </button>
-    </div>
-
-    <!-- Navbar collapse -->
-
-    <div class="navbar-collapse collapse navbar-collapse-sidebar" id="mainNavbar">
-
-      <div class="d-block d-lg-none">
-        <div class="p-3">
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <i class="icon icon-layers"></i>
-              <strong>Reveal</strong>
-            </div>
-            <button class="btn p-0" type="button" data-toggle="collapse" data-target="#mainNavbar"
-              aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="icon icon-cross font-size-lg"></span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <ul class="navbar-nav ml-auto align-items-lg-center">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item dropdown px-lg-3">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            Shop
-          </a>
-          <div class="dropdown-menu" aria-labelledby="dropdown-shop">
-            <a class="dropdown-item" href="#">Shop</a>
-            <a class="dropdown-item" href="#">Product</a>
-            <a class="dropdown-item" href="#">Checkout</a>
-          </div>
-        </li>
-        <li class="nav-item px-lg-3">
-          <a class="nav-link" href="#">Collection</a>
-        </li>
-
-        <li class="nav-item d-none d-lg-inline ml-lg-5">
-          <a href="#" class="nav-link toggle-show" data-show="loginComponent">
-            <span class="icon icon-user"></span>
-          </a>
-        </li>
-        <li class="nav-item d-none d-lg-inline">
-          <a href="#" class="nav-link toggle-show d-flex" data-show="cartComponent">
-            <div class="px-2 py-1">
-              <span class="icon icon-cart"></span>
-              <sup>3</sup>
-            </div>
-          </a>
-        </li>
-
-      </ul>
-    </div>
-
-  </div>
-</nav>
-
-
-<!-- Sidebar cart -->
-
-<nav id="cartComponent" class="sidebar sidebar-right bg-white border-left">
-  <div class="sidebar-content">
-
-    <!-- Sidebar header -->
-
-    <div class="sidebar-header px-3 pt-3">
-      <button type="button" class="toggle-show close" data-show="cartComponent">
-        <span class="icon icon-cross"></span>
-      </button>
-      <div>Shopping cart</div>
-    </div>
-
-    <hr />
-
-    <!-- Sidebar items -->
-
-    <div>
-      <ul class="list-group list-group-flush mb-3">
-
-        <li class="list-group-item p-4">
-          <div class="row no-gutters align-items-center">
-            <div class="col-md-2 mb-2 mb-lg-0">
-              <img src="../assets/images/templates/clothing/shoe-1.jpg" alt="" class="img-fluid br-sm" />
-            </div>
-            <div class="col-md-6 pl-md-2 mb-2 mb-lg-0">
-              <p class="my-0">First product</p>
-              <small class="text-muted">Brief description</small>
-            </div>
-            <div class="col-6 col-md-2">
-              <input type="number" value="2" class="form-control form-control-sm" />
-            </div>
-            <div class="col-6 col-md-2 text-right text-muted">
-              <div>$1200</div>
-              <small><del>$1499</del></small>
-            </div>
-          </div>
-        </li>
-
-        <li class="list-group-item p-4">
-          <div class="row no-gutters align-items-center">
-            <div class="col-md-2 mb-2 mb-lg-0">
-              <img src="../assets/images/templates/clothing/shoe-1.jpg" alt="" class="img-fluid br-sm" />
-            </div>
-            <div class="col-md-6 pl-md-2 mb-2 mb-lg-0">
-              <p class="my-0">Second product</p>
-              <small class="text-muted">Brief description</small>
-            </div>
-            <div class="col-6 col-md-2">
-              <input type="number" value="2" class="form-control form-control-sm" />
-            </div>
-            <div class="col-6 col-md-2 text-right text-muted">
-              <div>$1200</div>
-              <small><del>$1499</del></small>
-            </div>
-          </div>
-        </li>
-
-        <li class="list-group-item p-4">
-          <div class="row no-gutters align-items-center">
-            <div class="col-md-2 mb-2 mb-lg-0">
-              <img src="../assets/images/templates/clothing/shoe-1.jpg" alt="" class="img-fluid br-sm" />
-            </div>
-            <div class="col-md-6 pl-md-2 mb-2 mb-lg-0">
-              <p class="my-0">Third product</p>
-              <small class="text-muted">Brief description</small>
-            </div>
-            <div class="col-6 col-md-2">
-              <input type="number" value="2" class="form-control form-control-sm" />
-            </div>
-            <div class="col-6 col-md-2 text-right text-muted">
-              <div>$1200</div>
-              <small><del>$1499</del></small>
-            </div>
-          </div>
-        </li>
-
-        <li class="list-group-item p-4 bg-light text-muted">
-          <div class="d-flex justify-content-between">
-            <div>
-              <small>Promocode: EXAMPLECODE</small>
-            </div>
-            <span>-$500</span>
-          </div>
-          <div class="d-flex justify-content-between">
-            <div>
-              <small>Discount 15%</small>
-            </div>
-            <span>-$15</span>
-          </div>
-          <div class="d-flex justify-content-between">
-            <div>
-              <small>Shipping</small>
-            </div>
-            <span>$0</span>
-          </div>
-        </li>
-
-        <li class="list-group-item p-4 d-flex justify-content-between">
-          <strong>Total (USD)</strong>
-          <strong>$ 1290,00</strong>
-        </li>
-
-      </ul>
-
-      <!-- Sidebar Buttons -->
-
-      <div class="row justify-content-center pt-3 m-0">
-        <div class="col-8">
-          <button type="submit" class="btn btn-rounded btn-sm btn-block btn-dark px-5">Go to checkout</button>
-        </div>
-      </div>
-
-    </div>
-
-  </div>
-</nav>
-
-<!--
-<header class="main-header">
->>>>>>> Stashed changes
 
 {% if request.user.is_authenticated %}
 <nav class="navbar navbar-sticky fixed-top navbar-expand-lg py-2">
@@ -271,7 +61,7 @@
                   </div>
               </li>
               <li class="nav-item px-lg-3">
-                  <a class="nav-link" href="#">Collection</a>
+                  <a class="nav-link" href="/collection">Collection</a>
               </li>
              
               <li class="nav-item d-none d-lg-inline ml-lg-5">
@@ -429,7 +219,7 @@
                   </div>
               </li>
               <li class="nav-item px-lg-3">
-                  <a class="nav-link" href="#">Collection</a>
+                  <a class="nav-link" href="/collection">Collection</a>
               </li>
              
               <li class="nav-item d-none d-lg-inline ml-lg-5">
@@ -441,10 +231,5 @@
       </div>
 
   </div>
-<<<<<<< Updated upstream
 </nav>
 {% endif %}
-=======
-</header>
- Right -->
->>>>>>> Stashed changes

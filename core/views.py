@@ -342,6 +342,18 @@ class HomeView(ListView):
     def get_queryset(self):
         return Item.objects.all()
 
+class CollectionView(ListView):
+    model = Item
+    template_name = "collection.html"
+
+    def get_context_data(self,**kwargs):
+        context = super(CollectionView,self).get_context_data(**kwargs)
+        context.update({
+            'order': OrderItem.objects.all()
+        })
+        return context
+    def get_queryset(self):
+        return Item.objects.all()
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
