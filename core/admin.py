@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile,Banner
+from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile,Banner,Comment
 
 class ItemResource(resources.ModelResource):
     class Meta:
@@ -72,3 +72,4 @@ admin.site.register(Coupon)
 admin.site.register(Refund)
 admin.site.register(Address, AddressAdmin)
 admin.site.register(UserProfile)
+admin.site.register(Comment)
