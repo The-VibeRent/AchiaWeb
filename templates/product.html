@@ -1,99 +1,410 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Product -->
 
-  <main class="mt-5 pt-4">
-    <div class="container dark-grey-text mt-5">
+<section class="bg-white py-3">
+  <div class="container">
+    <div class="row align-items-lg-center">
 
-      <!--Grid row-->
-      <div class="row wow fadeIn">
+      <!-- Product gallery -->
 
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
+      <div class="col-lg-7 col-xl-8 pb-5">
 
-          <img src="{{ object.image.url }}" class="img-fluid" alt="">
-
+        <div class="owl-carousel" data-items="1" data-nav="false" data-margin="15" data-dots="true">
+          <img src="{{ object.image.url }}" alt="Product image" />
+          <img src="{{ object.image.url }}" alt="Product image" />
+          <img src="{{ object.image.url }}" alt="Product image" />
         </div>
-        <!--Grid column-->
+      </div>
 
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
+      <!-- Product info -->
 
-          <!--Content-->
-          <div class="p-4">
+      <div class="col-lg-5 col-xl-4">
+        <div class="bg-light shadow-sm br-sm p-3 p-lg-4">
 
-            <div class="mb-3">
-              <a href="">
-                <span class="badge purple mr-1">{{ object.get_category_display }}</span>
-              </a>
+          <!-- Product order -->
+
+          <div class="clearfix">
+
+            <!-- Product price -->
+            {% if object.discount_price %}
+            <div class="h2 mb-0">
+              <span>Rs {{ object.discount_price }}</span>
+              <small>
+                <del>Rs {{ object.price }}</del>
+              </small>
+            </div>
+            {% else %}
+            <div class="h2 mb-0">
+              <span>Rs {{ object.price }}</span>
+            </div>
+            {% endif %}
+
+            <hr />
+
+            <!-- Product brand -->
+
+            <div class="row">
+              <div class="col-6 col-lg-12">
+                <div class="row mb-2">
+                  <div class="col-xl-4">
+                    <span class="text-muted">Category</span>
+                  </div>
+                  <div class="col-xl-8">{{ object.get_category_display }}</div>
+                </div>
+              </div>
+              <div class="col-6 col-lg-12">
+                <div class="row mb-2">
+                  <div class="col-xl-4">
+                    <span class="text-muted">Materials</span>
+                  </div>
+                  <div class="col-xl-8">Plastic, Leather</div>
+                </div>
+              </div>
+              <div class="col-6 col-lg-12">
+                <div class="row mb-2">
+                  <div class="col-xl-4">
+                    <span class="text-muted">Rating</span>
+                  </div>
+                  <div class="col-xl-8">
+                    <i class="fa fa-star icon-xs"></i> {{object.rating}}
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 col-lg-12">
+                <div class="row mb-2">
+                  <div class="col-xl-4">
+                    <span class="text-muted">Availability</span>
+                  </div>
+                  <div class="col-xl-8">
+                    <i class="icon icon-checkmark-circle"></i> In stock
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <p class="lead">
-              {% if object.discount_price %}
-              <span class="mr-1">
-                <del>Rs.{{ object.price }}</del>
-              </span>
-              <span>Rs.{{ object.discount_price }}</span>
-              {% else %}
-              <span>Rs.{{ object.price }}</span>
-              {% endif %}
-            </p>
+            <hr />
 
-            <p class="lead font-weight-bold">Description</p>
+            <!-- Product size
 
-            <p>{{ object.description }}</p>
+            <div class="mb-2">
+              <div class="text-muted pre-label mb-2">
+                <small>Choose size</small>
+              </div>
+              <div class="btn-group-toggle w-100" data-toggle="buttons">
+                <label class="btn btn-outline-primary btn-icon btn-icon-sm p-1 active">
+                  <input type="radio" name="options" id="size-option1" checked="checked"> XS
+                </label>
+                <label class="btn btn-outline-primary btn-icon btn-icon-sm p-1">
+                  <input type="radio" name="options" id="size-option2"> &nbsp;S&nbsp;
+                </label>
+                <label class="btn btn-outline-primary btn-icon btn-icon-sm p-1">
+                  <input type="radio" name="options" id="size-option3"> &nbsp;M&nbsp;
+                </label>
+                <label class="btn btn-outline-primary btn-icon btn-icon-sm p-1">
+                  <input type="radio" name="options" id="size-option4"> &nbsp;L&nbsp;
+                </label>
+                <label class="btn btn-outline-primary btn-icon btn-icon-sm p-1">
+                  <input type="radio" name="options" id="size-option5"> &nbsp;XL&nbsp;
+                </label>
+                <label class="btn btn-outline-primary btn-icon btn-icon-sm p-1">
+                  <input type="radio" name="options" id="size-option6"> XXL&nbsp;
+                </label>
+              </div>
+            </div>
 
-            {% comment %} <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <button class="btn btn-primary btn-md my-0 p" type="submit">
-                Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </button>
+            <hr />
 
-            </form> {% endcomment %}
-            <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">
-              Add to cart
-              <i class="fas fa-shopping-cart ml-1"></i>
-            </a>
-            <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">
-              Remove from cart
-            </a>
+            <!-- Product colors
+
+            <div class="mb-2">
+              <div class="text-muted pre-label mb-2">
+                <small>Choose color</small>
+              </div>
+              <div class="btn-group-toggle w-100" data-toggle="buttons">
+                <label class="btn btn-color btn-color-orange my-1">
+                  <input type="radio" name="options" id="color-option10">
+                </label>
+                <label class="btn btn-color btn-color-red my-1">
+                  <input type="radio" name="options" id="color-option3">
+                </label>
+                <label class="btn btn-color btn-color-green my-1">
+                  <input type="radio" name="options" id="color-option4">
+                </label>
+                <label class="btn btn-color btn-color-yellow my-1">
+                  <input type="radio" name="options" id="color-option9">
+                </label>
+                <label class="btn btn-color btn-color-indigo my-1">
+                  <input type="radio" name="options" id="color-option8">
+                </label>
+                <label class="btn btn-color btn-color-pink my-1">
+                  <input type="radio" name="options" id="color-option5">
+                </label>
+                <label class="btn btn-color btn-color-purple my-1">
+                  <input type="radio" name="options" id="color-option6">
+                </label>
+                <label class="btn btn-color btn-color-blue my-1">
+                  <input type="radio" name="options" id="color-option7">
+                </label>
+                <label class="btn btn-color btn-color-cian my-1">
+                  <input type="radio" name="options" id="color-option11">
+                </label>
+                <label class="btn btn-color btn-color-aqua my-1">
+                  <input type="radio" name="options" id="color-option12">
+                </label>
+              </div>
+            </div>
+
+            <hr>
+
+            <!-- Product quantity -->
+
+            <div class="mb-2">
+              <div class="row">
+                <div class="col-7">
+                  <a herf="{{ object.get_add_to_cart_url }}" class="btn btn-block btn-primary">
+                    <i class="icon icon-cart"></i> Add to cart
+                  </a>
+                </div>
+              </div>
+            </div>
 
           </div>
-          <!--Content-->
+
+          <!-- Add to basket
+
+          <div class="btn-group w-100">
+            <span class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <span class="show"><i class="fa fa-heart-o"></i> Whish</span>
+              <span class="hide"><i class="fa fa-heart"></i> Whislisted</span>
+            </span>
+            <span class="btn btn-sm btn-outline-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+              <span class="show"><i class="fa fa-eye-slash"></i> Watch</span>
+              <span class="hide"><i class="fa fa-eye"></i> Watching</span>
+            </span>
+          </div>
+ -->
 
         </div>
-        <!--Grid column-->
-
       </div>
-      <!--Grid row-->
-
-      <hr>
-
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-4 h4">Additional information</h4>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-            voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <!--Grid row-->
-    
-      <!--Grid row-->
 
     </div>
-  </main>
+
+  </div>
+</section>
+
+<!-- Product details -->
+
+<section>
+  <div class="container">
+
+    <!-- Product tabs -->
+
+    <ul class="nav nav-tabs nav-lavalamp justify-content-center mb-4" id="productTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review"
+          aria-selected="true">
+          Review
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="description-tab" data-toggle="tab" href="#description" role="tab"
+          aria-controls="description" aria-selected="false">
+          Description
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="shipping-tab" data-toggle="tab" href="#shipping" role="tab" aria-controls="shipping"
+          aria-selected="false">
+          Shipping
+        </a>
+      </li>
+    </ul>
+
+    <!-- Product tab content -->
+
+    <div class="tab-content" id="productTabContent">
+      <div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+
+        <!-- Widget rating -->
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="rating-overall">
+
+
+
+
+
+
+
+
+              <!-- Comments -->
+
+              <div class="py-3 py-lg-4">
+
+                <!-- Comments header -->
+
+                <header>
+                  <div class="h3 mb-1">Recent comments</div>
+                </header>
+
+                <!-- Comments feedback -->
+
+                <div class="pt-3 pt-lg-4">
+
+                  <div id="comment-1">
+
+                    <div class="mb-4">
+                      <div class="d-flex align-items-center text-small">
+                        <img src="assets/images//demo/user-1.jpg" class="mr-2 rounded-circle" alt="..."
+                          style="width: 40px;">
+                        <div><strong class="mr-1">Anna North</strong></div>
+                        <div class="text-muted">- 45 minutes ago</div>
+                        <div class="ml-auto">
+                          <i class="fa fa-star icon-xs text-primary"></i>
+                          <i class="fa fa-star icon-xs text-primary"></i>
+                          <i class="fa fa-star icon-xs text-primary"></i>
+                          <i class="fa fa-star icon-xs text-secondary"></i>
+                          <i class="fa fa-star icon-xs text-secondary"></i>
+                        </div>
+                      </div>
+                      <div class="my-2">
+                        Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                      </div>
+
+                    </div>
+
+                  </div>
+
+
+                </div>
+              </div>
+
+              <hr>
+
+              <!-- Reply -->
+
+              <div class="py-3 py-lg-4">
+
+                <!-- Reply header -->
+
+                <header>
+                  <div class="h3 mb-1">Leave a Reply</div>
+                  <p class="text-muted"><small>Your email address will not be published.</small></p>
+                </header>
+
+                <!-- Reply form -->
+
+                <div class="pt-3 pt-lg-4">
+                  <form>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="label" for="exampleInputEmail1">Email address</label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="label" for="exampleInputName1">Your name</label>
+                          <input type="password" class="form-control" id="exampleInputName1">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="label" for="exampleComment">Comment</label>
+                      <textarea class="form-control" name="" id="exampleComment" cols="20" rows="4"></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                      <button type="submit" class="btn link link-right link-dark"><strong>Send</strong></button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tab-pane fade" id="description" role="tabpanel" aria-labelledby="description-tab">
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="py-3 py-lg-4">
+
+              <header>
+                <div class="h3 mb-1">Product description</div>
+                <p>Specfication</p>
+              </header>
+
+              <div class="py-3 py-lg-4">
+                <p>{{ object.description }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="py-3 py-lg-4">
+
+              <header>
+                <div class="h3 mb-1">Shipping information</div>
+                <p>Specfication</p>
+              </header>
+
+              <div class="py-3 py-lg-4">
+
+                <h5>Money Back Guarantee</h5>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus odio quam, facilisis vel placerat
+                  at, convallis at ipsum. Quisque posuere justo non imperdiet volutpat. Orci varius natoque penatibus et
+                  magnis dis parturient montes, nascetur ridiculus mus. Donec vehicula felis lorem, at sodales mauris
+                  convallis in. Quisque elementum augue justo, at rutrum velit eleifend sed. Mauris vitae metus erat.
+                  Duis augue purus, ornare vitae mauris eget, dictum tincidunt leo. Sed quis felis blandit, aliquam
+                  sapien eget, pulvinar dolor. Vivamus vulputate egestas justo non ullamcorper.</p>
+
+                <h5>Need to Return an Item?</h5>
+                <p>Sed eget erat justo. Curabitur scelerisque sagittis molestie. Nunc sit amet porttitor odio. In
+                  blandit sem eu ante pellentesque, ornare placerat metus fringilla. Ut eu arcu finibus, aliquam libero
+                  nec, porta elit. Praesent sit amet odio a quam vehicula molestie eu ut quam. Vivamus viverra augue
+                  nulla, ac commodo sapien dictum ut. Pellentesque vehicula maximus velit vitae imperdiet.</p>
+
+                <h5>Check an open return request</h5>
+                <p>Praesent mattis justo sit amet dui semper tempus vel eu turpis. Donec sem nulla, porta vitae
+                  sollicitudin et, finibus vel ligula. Fusce et lorem pharetra, egestas tortor sit amet, ultricies mi.
+                  Cras ac tellus et eros maximus cursus. Class aptent taciti sociosqu ad litora torquent per conubia
+                  nostra, per inceptos himenaeos. Mauris ultricies leo tempor, ullamcorper magna nec, consectetur
+                  sapien. Maecenas rhoncus non eros id tristique. Aenean condimentum in quam sed rhoncus. Nunc aliquet,
+                  dolor rhoncus imperdiet faucibus, est ipsum sollicitudin massa, a placerat justo leo vel turpis. In
+                  venenatis felis vitae volutpat viverra. Donec sit amet urna tempus, convallis nunc eget, tempor neque.
+                  Nunc gravida tincidunt lectus. Mauris molestie sit amet dolor sit amet luctus. Maecenas ligula mi,
+                  tempor at dignissim ut, fermentum ut arcu.</p>
+
+                <h5>Send the item back</h5>
+                <p>Curabitur non ipsum sit amet elit ultricies venenatis. Sed blandit vitae justo sit amet convallis.
+                  Aliquam tristique, odio quis vestibulum interdum, magna risus luctus augue, vitae lobortis est enim
+                  vel mauris. In eu nibh sed neque auctor efficitur. Aenean quis congue urna. Suspendisse id ultrices
+                  eros. Aliquam bibendum massa eget ex scelerisque, vitae convallis felis rutrum. Integer sed augue
+                  quam.</p>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
 {% endblock content %}
