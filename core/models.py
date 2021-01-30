@@ -70,7 +70,7 @@ class Item(models.Model):
 
     def get_absolute_url(self):
         return reverse("core:product", kwargs={
-            'slug': self.slug
+            'id': self.id
         })
 
     def get_add_to_cart_url(self):
@@ -82,6 +82,20 @@ class Item(models.Model):
         return reverse("core:remove-from-cart", kwargs={
             'slug': self.slug
         })
+
+class Comment(models.Model):
+    item = models.ForeignKey(Item,on_delete=models.CASCADE,related_name='comments')
+    name = models.CharField(max_length=50 , primary_key=True)
+    email = models.EmailField(null=True)
+    body = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ['created_on']
+
+    def __str__(self):
+        return 'Comment {} by {}'.format(self.body, self.name)
 
 
 class OrderItem(models.Model):
