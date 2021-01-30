@@ -12,7 +12,7 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm,CommentForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Banner
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -360,9 +360,22 @@ class OrderSummaryView(LoginRequiredMixin, View):
             return redirect("/")
 
 
-class ItemDetailView(DetailView):
-    model = Item
-    template_name = "product.html"
+def ItemDetailView(request,id):
+    item = get_object_or_404(Item, pk=id)
+    comments = item.comments.filter(active=True)
+    new_comment = None
+    if request.method == 'POST':
+        comment_form = CommentForm(data=request.POST)
+        if comment_form.is_valid():
+                # Create Comment object but don't save to database yet
+            new_comment = comment_form.save(commit=False)
+                # Assign the current post to the comment
+            new_comment.item = item
+                # Save the comment to the database
+            new_comment.save()
+    else:
+        comment_form = CommentForm()
+    return render(request,'product.html',{'id':id , 'object':item , 'comment':comments , 'new_comment': new_comment , 'comment_form': comment_form })
 
 
 @login_required

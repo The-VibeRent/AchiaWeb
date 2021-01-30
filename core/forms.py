@@ -1,11 +1,16 @@
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-
+from .models import Comment
 
 PAYMENT_CHOICES = (
     ('G', 'GooglePay'),
 )
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('email','name','body',)
 
 
 class CheckoutForm(forms.Form):
