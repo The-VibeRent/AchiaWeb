@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block content %}
 <div class="login-box">
     <div class="card card-panel bg-white shadow-sm mb-2">
 
@@ -10,7 +11,7 @@
             <div class="card-body p-0">
                 <hr class="m-0">
                 <div class="p-4 p-md-6">
-                    {% block content %}
+                    {% block form %}
 
                     {% endblock %}
                 </div>
@@ -18,3 +19,4 @@
         </div>
     </div>
 </div>
+{% endblock %}
