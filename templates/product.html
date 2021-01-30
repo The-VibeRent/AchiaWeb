@@ -232,98 +232,76 @@
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <div class="rating-overall">
-
-
-
-
-
-
-
-
               <!-- Comments -->
 
               <div class="py-3 py-lg-4">
 
                 <!-- Comments header -->
 
-                <header>
-                  <div class="h3 mb-1">Recent comments</div>
-                </header>
-
-                <!-- Comments feedback -->
-
+              
+              {% if comment %}
+              <header>
+                <div class="h3 mb-1">Recent comments</div>
+              </header>                
+              {% endif %}
+                
                 <div class="pt-3 pt-lg-4">
-
+                  {% for comment in comment %}
                   <div id="comment-1">
 
                     <div class="mb-4">
                       <div class="d-flex align-items-center text-small">
-                        <img src="assets/images//demo/user-1.jpg" class="mr-2 rounded-circle" alt="..."
-                          style="width: 40px;">
-                        <div><strong class="mr-1">Anna North</strong></div>
-                        <div class="text-muted">- 45 minutes ago</div>
-                        <div class="ml-auto">
-                          <i class="fa fa-star icon-xs text-primary"></i>
-                          <i class="fa fa-star icon-xs text-primary"></i>
-                          <i class="fa fa-star icon-xs text-primary"></i>
-                          <i class="fa fa-star icon-xs text-secondary"></i>
-                          <i class="fa fa-star icon-xs text-secondary"></i>
-                        </div>
+                        <span class="icon icon-user"></span>
+                        <div><strong class="mr-1">- {{ comment.name }}</strong></div>
+                        <div class="text-muted">- {{ comment.created_on }}</div>
                       </div>
                       <div class="my-2">
-                        Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                        {{ comment.body }}
                       </div>
-
                     </div>
-
                   </div>
-
+                  {% endfor %}
 
                 </div>
+                
+
+
+                <!-- Comments feedback -->
+
               </div>
 
               <hr>
 
               <!-- Reply -->
-
               <div class="py-3 py-lg-4">
-
-                <!-- Reply header -->
-
+                {% if new_comment %}
+                <header>
+                  <div class="h3 mb-1">Thank You...</div>
+                </header>
+                {% else %}
                 <header>
                   <div class="h3 mb-1">Leave a Reply</div>
                   <p class="text-muted"><small>Your email address will not be published.</small></p>
                 </header>
-
-                <!-- Reply form -->
-
                 <div class="pt-3 pt-lg-4">
-                  <form>
-                    <div class="row">
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="label" for="exampleInputEmail1">Email address</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                        </div>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="form-group">
-                          <label class="label" for="exampleInputName1">Your name</label>
-                          <input type="password" class="form-control" id="exampleInputName1">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="label" for="exampleComment">Comment</label>
-                      <textarea class="form-control" name="" id="exampleComment" cols="20" rows="4"></textarea>
-                    </div>
 
+                  <form method="POST">
+                    {% csrf_token %}
+                    {% load bootstrap3 %}
+                    {% bootstrap_form comment_form %}
                     <div class="d-flex justify-content-between align-items-center">
                       <button type="submit" class="btn link link-right link-dark"><strong>Send</strong></button>
                     </div>
                   </form>
                 </div>
+
+                {% endif %}
+
+                <!-- Reply header -->
+
+
+                <!-- Reply form -->
+
               </div>
             </div>
           </div>
@@ -335,12 +313,10 @@
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <div class="py-3 py-lg-4">
-
               <header>
                 <div class="h3 mb-1">Product description</div>
                 <p>Specfication</p>
               </header>
-
               <div class="py-3 py-lg-4">
                 <p>{{ object.description }}</p>
               </div>
