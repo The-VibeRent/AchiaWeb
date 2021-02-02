@@ -1,23 +1,22 @@
-{% load static %}
-{% load bootstrap4 %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+{% block content %}
+<div class="login-box">
+    <div class="card card-panel bg-white shadow-sm mb-2">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block head_title %}{% endblock %}
-    </title>
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
-    <link href="{% static 'css/form.css' %}" rel="stylesheet">
-</head>
+        <div class="card-header py-4 bg-white" id="headingOne">
+            <h2 class="h4 mb-0">Register now</h2>
+        </div>
 
-<body>
-    <div class="login-box">
-        {% block content %}
-        {% endblock %}
-    </body>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-</html>
+        <div aria-labelledby="headingOne" data-parent="#accordion1">
+            <div class="card-body p-0">
+                <hr class="m-0">
+                <div class="p-4 p-md-6">
+                    {% block form %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
