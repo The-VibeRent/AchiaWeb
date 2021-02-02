@@ -886,7 +886,7 @@ function createTemplate(product) {
     <div class="col-6 col-xl-4 col-md-4 mb-5">
       <div class="wow fadeInUp" data-wow-delay=".0s" >
         <div class="card card-fill" style="height: 260px;">
-          <a href="product.html"><img class="card-img-top img-hover"
+          <a href="/product/${product.id}/"><img class="card-img-top img-hover"
             src="${product.image}" alt="Sample"></a>
 
           <a href="#">
@@ -904,7 +904,7 @@ function createTemplate(product) {
             <p><span class="mr-1"><strong>$${product.price}</strong></span></p>
             </div>
             <div class= col-4>
-              <a href="product.html" class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Add to cart">
+              <a href="/product/${product.id}/" class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Add to cart">
                   <i class="icon icon-cart font-size-xl"></i>
               </a>
               </div>
