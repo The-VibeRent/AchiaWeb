@@ -2,7 +2,7 @@
 /*
     HTML Template v1.0.0 (http://elathemes.com/)
     Copyright 2020 Extended Bootstrap Template
-    Bootstrap 4.5 
+    Bootstrap 4.5
     Copyright 2020 ElaThemes
 
     [Table of contents]
@@ -100,7 +100,7 @@
             └── Tabzy
 */
 @import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
+ @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
 :root {
   --blue: #007bff;
@@ -644,6 +644,7 @@ mark,
     font-size: calc(0.8rem + 0.6vw) ;
   }
 }
+
 
 .blockquote-footer {
   display: block;
@@ -12477,7 +12478,7 @@ a.text-wtansparent:hover, a.text-wtansparent:focus {
   }
 }
 
-/*  
+/*
     --------------------
     Dark mode - General
     -------------------
@@ -12491,7 +12492,7 @@ a.text-wtansparent:hover, a.text-wtansparent:focus {
   border-color: #313131;
 }
 
-/*  
+/*
     --------------
     Defaults
     --------------
@@ -12604,7 +12605,7 @@ button:focus {
   }
 }
 
-/*  
+/*
     --------------
     Header
     --------------
@@ -12641,7 +12642,7 @@ button:focus {
   padding-top: 4.5rem;
 }
 
-/*  
+/*
     --------------
     Navbar
     --------------
@@ -12807,7 +12808,7 @@ button:focus {
   position: relative;
 }
 
-/*  
+/*
     --------------
     Sections
     --------------
@@ -12845,7 +12846,7 @@ button:focus {
   background-color: #8d47ff;
 }
 
-/*  
+/*
     -------
     Sidebar
     -------
@@ -12961,7 +12962,7 @@ button:focus {
   }
 }
 
-/*  
+/*
     --------------
     Typography
     --------------
@@ -12990,7 +12991,7 @@ button:focus {
   font-size: 1.875rem;
 }
 
-/*  
+/*
     --------------
     Cards
     --------------
@@ -13035,18 +13036,18 @@ button:focus {
   font-size: 1.275rem;
 }
 
-/*  
+/*
     --------------
-    Card title 
+    Card title
     --------------
 */
 .card-title a:hover {
   color: #6d14ff;
 }
 
-/*  
+/*
     --------------
-    Card image 
+    Card image
     --------------
 */
 .card-image .card-footer {
@@ -13065,27 +13066,27 @@ button:focus {
   z-index: 1000;
 }
 
-/*  
+/*
     --------------
-    Card footer 
+    Card footer
     --------------
 */
 .card-footer.card-footer-bottom {
   padding: 0 1.875rem 1.875rem;
 }
 
-/*  
+/*
     --------------
-    Card dim 
+    Card dim
     --------------
 */
 .card-dim {
   background-color: #fafafa;
 }
 
-/*  
+/*
     --------------
-    Card shaddow 
+    Card shaddow
     --------------
 */
 .card-fill {
@@ -13093,9 +13094,9 @@ button:focus {
   background-color: #fff;
 }
 
-/*  
+/*
     --------------
-    Card item 
+    Card item
     --------------
 */
 .card-item .card-body {
@@ -13123,9 +13124,9 @@ button:focus {
   transform: translateY(-1.5rem);
 }
 
-/*  
+/*
     --------------
-    Card Box 
+    Card Box
     --------------
 */
 .card-box {
@@ -13194,7 +13195,7 @@ button:focus {
   bottom: auto;
 }
 
-/*  
+/*
     -----------------
     Card Hover Rise
     -----------------
@@ -13229,7 +13230,7 @@ button:focus {
   transform: translateY(0);
 }
 
-/*  
+/*
     -----------------
     Card Panel
     -----------------
@@ -13271,7 +13272,7 @@ button:focus {
   padding-top: 0;
 }
 
-/*  
+/*
     -----------------
     Card stacked
     -----------------
@@ -13296,9 +13297,9 @@ button:focus {
   z-index: -1;
 }
 
-/*  
+/*
     --------------
-    Card - Dark mode 
+    Card - Dark mode
     --------------
 */
 [data-theme="dark"] .card-fill {
@@ -13334,7 +13335,7 @@ button:focus {
   background-color: #292929;
 }
 
-/*  
+/*
     --------------
     Card - columns
     --------------
@@ -13351,7 +13352,7 @@ button:focus {
   }
 }
 
-/*  
+/*
     -------
     Buttons
     -------
@@ -13426,7 +13427,7 @@ button:focus {
   display: none;
 }
 
-/*  
+/*
     --------------
     Buttons social
     --------------
@@ -14229,7 +14230,7 @@ button:focus {
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125), 0 0 0 0.05rem rgba(135, 50, 173, 0.5);
 }
 
-/*  
+/*
     -----------------
     Button slide
     ------------------
@@ -14423,7 +14424,7 @@ button:focus {
   background-color: transparent;
 }
 
-/*  
+/*
     -----------
     Button blink
     -----------
@@ -14710,7 +14711,7 @@ button:focus {
   /* IE6-9 */
 }
 
-/*  
+/*
     --------------
     Breadcrumb
     --------------
@@ -14752,7 +14753,7 @@ button:focus {
   bottom: 0;
 }
 
-/*  
+/*
     --------------
     Box
     --------------
@@ -14831,7 +14832,7 @@ button:focus {
   }
 }
 
-/*  
+/*
     --------------
     Box image
     --------------
@@ -14841,7 +14842,7 @@ button:focus {
   background-size: cover;
 }
 
-/*  
+/*
     --------------
     Box parallax
     --------------
@@ -14850,7 +14851,7 @@ button:focus {
   background-attachment: fixed;
 }
 
-/*  
+/*
     --------------
     Box border
     --------------
@@ -14859,7 +14860,7 @@ button:focus {
   border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-/*  
+/*
     --------------
     Box product
     --------------
@@ -14875,7 +14876,7 @@ button:focus {
   bottom: 1.25rem;
 }
 
-/*  
+/*
     --------------
     Box hover
     --------------
@@ -14896,7 +14897,7 @@ button:focus {
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.125);
 }
 
-/*  
+/*
     --------------
     Box hover drop
     --------------
@@ -14970,7 +14971,7 @@ button:focus {
   bottom: 0;
 }
 
-/*  
+/*
     --------------
     Box hover slide
     --------------
@@ -15006,7 +15007,7 @@ button:focus {
   transition: all 0.4s;
 }
 
-/*  
+/*
     --------------
     Box hover fall
     --------------
@@ -15192,7 +15193,7 @@ button:focus {
   transform: translate3d(0, 10px, 0);
 }
 
-/*  
+/*
     --------------
     Owl carousel
     --------------
@@ -15349,7 +15350,7 @@ button:focus {
   transition: all 1s;
 }
 
-/*  
+/*
     --------------
     Owl theming
     --------------
@@ -15462,7 +15463,7 @@ button:focus {
   background-color: transparent;
 }
 
-/*  
+/*
     --------------
     Owl carousel
     --------------
@@ -15509,7 +15510,7 @@ button:focus {
   bottom: 5px;
 }
 
-/*  
+/*
     --------------
     Figures
     --------------
@@ -15538,7 +15539,7 @@ button:focus {
   transition: all 0.2s;
 }
 
-/*  
+/*
     ------------------
     List group clean
     ------------------
@@ -15578,7 +15579,7 @@ button:focus {
   color: rgba(255, 255, 255, 0.6) !important;
 }
 
-/*  
+/*
     -----------------------
     List group - Dark mode
     ----------------------
@@ -15600,7 +15601,7 @@ button:focus {
   color: #8d47ff;
 }
 
-/*  
+/*
     --------------
     Form simple
     --------------
@@ -15633,7 +15634,7 @@ button:focus {
   box-shadow: none;
 }
 
-/*  
+/*
     --------------
     Form fill
     --------------
@@ -15651,7 +15652,7 @@ button:focus {
   background-color: #bcbcbc;
 }
 
-/*  
+/*
     --------------
     Form flat
     --------------
@@ -15662,7 +15663,7 @@ button:focus {
   border-radius: 0;
 }
 
-/*  
+/*
     --------------
     Custom small
     --------------
@@ -15689,7 +15690,7 @@ button:focus {
   height: 1.5rem;
 }
 
-/*  
+/*
     ------------------------
     Custom control color set
     ------------------------
@@ -15850,7 +15851,7 @@ button:focus {
   background-color: transparent;
 }
 
-/*  
+/*
     ------------------------
     Custom control light
     ------------------------
@@ -15888,7 +15889,7 @@ button:focus {
   border-color: #ced4da;
 }
 
-/*  
+/*
     -----------------
     Form - Dark mode
     -----------------
@@ -15995,7 +15996,7 @@ button:focus {
   transform: translate3d(0, -50%, 0);
 }
 
-/*  
+/*
     --------------
     Hero
     --------------
@@ -16021,7 +16022,7 @@ button:focus {
   transform: translate3d(0, -50%, 0);
 }
 
-/*  
+/*
     --------------
     Nav defaults
     --------------
@@ -16053,7 +16054,7 @@ button:focus {
   }
 }
 
-/*  
+/*
     --------------
     Nav tabs
     --------------
@@ -16077,7 +16078,7 @@ button:focus {
   border-bottom: 0;
 }
 
-/*  
+/*
     --------------
     Nav pills
     --------------
@@ -16090,7 +16091,7 @@ button:focus {
   border-radius: 2rem;
 }
 
-/*  
+/*
     -----------------------
     Nav tabs & pills colors
     -----------------------
@@ -16238,7 +16239,7 @@ button:focus {
   border-color: #000;
 }
 
-/*  
+/*
     --------------
     Nav box colors
     --------------
@@ -16268,7 +16269,7 @@ button:focus {
   border-radius: 0.25rem;
 }
 
-/*  
+/*
     --------------
     Nav box colors
     --------------
@@ -16429,7 +16430,7 @@ button:focus {
   border-radius: 0.25rem;
 }
 
-/*  
+/*
     --------------
     Nav dark mode
     --------------
@@ -16472,7 +16473,7 @@ button:focus {
   border-color: #adb5bd;
 }
 
-/*  
+/*
     --------------
     Sider
     --------------
@@ -16505,7 +16506,7 @@ button:focus {
   background-color: #252525;
 }
 
-/*  
+/*
     --------------
     Steps
     --------------
@@ -16660,7 +16661,7 @@ button:focus {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-/*  
+/*
     --------------
     Tables
     --------------
@@ -16675,7 +16676,7 @@ button:focus {
   border-color: #454d55;
 }
 
-/*  
+/*
     --------------
     BG Layer
     --------------
@@ -16717,7 +16718,7 @@ button:focus {
   right: 0;
 }
 
-/*  
+/*
     --------------
     Blockquote
     --------------
@@ -16791,7 +16792,7 @@ button:focus {
   bottom: 1rem;
 }
 
-/*  
+/*
     ------------------
     Border radius
     -----------------
@@ -16834,7 +16835,7 @@ button:focus {
   border-radius: 2rem;
 }
 
-/*  
+/*
     ---------------------
     Border radius corners
     ---------------------
@@ -16855,7 +16856,7 @@ button:focus {
   border-bottom-right-radius: 2rem;
 }
 
-/*  
+/*
     -----
     Cover
     -----
@@ -16916,7 +16917,7 @@ button:focus {
   filter: blur(10px);
 }
 
-/*  
+/*
     ----------
     Cover back
     ----------
@@ -16934,7 +16935,7 @@ button:focus {
   overflow: hidden;
 }
 
-/*  
+/*
     ------------------
     Background light
     -----------------
@@ -16987,7 +16988,7 @@ button:focus {
   background-color: rgba(38, 38, 38, 0);
 }
 
-/*  
+/*
     ------------------
     Background colors
     -----------------
@@ -17057,7 +17058,7 @@ button:focus {
   background-color: #343a40;
 }
 
-/*  
+/*
     ------------------
     Background grays
     -----------------
@@ -17107,7 +17108,7 @@ button:focus {
   background-color: #212529;
 }
 
-/*  
+/*
     --------------
     Divider
     --------------
@@ -17191,7 +17192,7 @@ button:focus {
   fill: #000;
 }
 
-/*  
+/*
     --------------
     Line divider
     --------------
@@ -17204,7 +17205,7 @@ button:focus {
   box-shadow: -1px -1px 0px 0px #e9ecef;
 }
 
-/*  
+/*
     -------------------
     Divider separator
     -------------------
@@ -17244,7 +17245,7 @@ button:focus {
   padding: 1rem 0;
 }
 
-/*  
+/*
     ------------------
     Dropdown
     -----------------
@@ -17303,12 +17304,12 @@ button:focus {
   }
 }
 
-/*  
+/*
     ------------------
     Fonts
     -----------------
 */
-/*  
+/*
     ------------------
     Gutters
     -----------------
@@ -17325,7 +17326,7 @@ button:focus {
   }
 }
 
-/*  
+/*
     --------
     Headings
     --------
@@ -17342,7 +17343,7 @@ h1, h2, h3, h4, h5, h6,
   }
 }
 
-/*  
+/*
     ------------------
     Lift
     -----------------
@@ -17364,7 +17365,7 @@ h1, h2, h3, h4, h5, h6,
   box-shadow: 0 3px 30px rgba(0, 0, 0, 0.125);
 }
 
-/*  
+/*
     ------------------
     Horizontal line
     -----------------
@@ -17397,7 +17398,7 @@ hr.light {
   border-color: #e9ecef;
 }
 
-/*  
+/*
     ------------------
     Icon sizes
     -----------------
@@ -17422,9 +17423,9 @@ hr.light {
   font-size: 6rem;
 }
 
-/*  
+/*
     ----------------
-    Link animaitions 
+    Link animaitions
     ----------------
 */
 .link {
@@ -17706,7 +17707,7 @@ hr.light {
   background-color: transparent;
 }
 
-/*  
+/*
     ----------------------------------
     Page loader
     ----------------------------------
@@ -17749,7 +17750,7 @@ hr.light {
   opacity: 0;
 }
 
-/*  
+/*
     ------------------
     Opacity
     -----------------
@@ -17778,7 +17779,7 @@ hr.light {
   opacity: 0.5;
 }
 
-/*  
+/*
     ---------
     Positions
     ---------
@@ -17849,7 +17850,7 @@ hr.light {
   }
 }
 
-/*  
+/*
     ----------
     Pagination
     ----------
@@ -17875,7 +17876,7 @@ hr.light {
   opacity: 0.5;
 }
 
-/*  
+/*
     --------
     Prelabel
     --------
@@ -17892,7 +17893,7 @@ hr.light {
   font-size: 80%;
 }
 
-/*  
+/*
     ------------------------
     Custom control color set
     ------------------------
@@ -17945,7 +17946,7 @@ hr.light {
   color: rgba(51, 51, 51, 0);
 }
 
-/*  
+/*
     ------
     Reveal
     ------
@@ -18100,7 +18101,7 @@ hr.light {
   background: #565e6d;
 }
 
-/*  
+/*
     ------------------
     Transform
     -----------------
@@ -18193,7 +18194,7 @@ hr.light {
   transform: translate3d(-10px, 0, 0);
 }
 
-/*  
+/*
     ------------------
     Rellax
     -----------------
@@ -18303,7 +18304,7 @@ hr.light {
   transform: translate3d(0, -50%, 0);
 }
 
-/*  
+/*
     --------------
     Row stretcher
     --------------
@@ -18331,7 +18332,7 @@ hr.light {
   }
 }
 
-/*  
+/*
     ------------------
     Tabzy
     -----------------
