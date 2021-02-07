@@ -4,7 +4,8 @@ from django_countries.widgets import CountrySelectWidget
 from .models import Comment
 
 PAYMENT_CHOICES = (
-    ('G', 'GooglePay'),
+    ('S', 'Stripe'),
+    ('P', 'PayPal')
 )
 
 class CommentForm(forms.ModelForm):

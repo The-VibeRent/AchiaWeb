@@ -36,8 +36,8 @@ def is_valid_form(values):
             valid = False
     return valid
 
-
 class CheckoutView(View):
+
     def get(self, *args, **kwargs):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
@@ -193,8 +193,10 @@ class CheckoutView(View):
 
                 payment_option = form.cleaned_data.get('payment_option')
 
-                if payment_option == 'G':
-                    return redirect('core:payment', payment_option='googlepay')
+                if payment_option == 'S':
+                    return redirect('core:payment', payment_option='stripe')
+                elif payment_option == 'P':
+                    return redirect('core:payment', payment_option='paypal')
                 else:
                     messages.warning(
                         self.request, "Invalid payment option selected")
@@ -211,8 +213,22 @@ class PaymentView(View):
             context = {
                 'order': order,
                 'DISPLAY_COUPON_FORM': False,
-                'MERCHANT_ID' : settings.STRIPE_PUBLIC_KEY
-            }            
+                'STRIPE_PUBLIC_KEY' : settings.STRIPE_PUBLIC_KEY
+            }
+            userprofile = self.request.user.userprofile
+            if userprofile.one_click_purchasing:
+                # fetch the users card list
+                cards = stripe.Customer.list_sources(
+                    userprofile.stripe_customer_id,
+                    limit=3,
+                    object='card'
+                )
+                card_list = cards['data']
+                if len(card_list) > 0:
+                    # update the context with the default card
+                    context.update({
+                        'card': card_list[0]
+                    })
             return render(self.request, "payment.html", context)
         else:
             messages.warning(

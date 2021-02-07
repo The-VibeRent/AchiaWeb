@@ -1,255 +1,261 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+<style>
+
+#stripeBtnLabel {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 16px;
+  font-variant: normal;
+  padding: 0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 500;
+  display: block;
+}
+
+#stripeBtn {
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  text-decoration: none;
+  color: #fff;
+  background: #32325d;
+  white-space: nowrap;
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-decoration: none;
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+  float: left;
+  width: 100%
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+  background-color: #43458b;
+}
+
+.stripe-form {
+  padding: 5px 30px;
+}
+
+#card-errors {
+  height: 20px;
+  padding: 4px 0;
+  color: #fa755a;
+}
+
+.stripe-form-row {
+  width: 100%;
+  float: left;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 40px;
+
+  padding: 10px 12px;
+
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background-color: white;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.current-card-form {
+  display: none;
+}
+
+</style>
+{% endblock extra_head %}
 
 {% block content %}
 
-<main>
-  <div class="container wow fadeIn">
-    <h2 class="my-5 h2 text-center">Payment</h2>
-    <div class="row">
-      <div class="col-md-12 mb-4">
-        <div class="card">
-          <div class="btn btn-primary btn-lg btn-block " id="google-pay"></div>
+  <main >
+    <div class="container wow fadeIn">
+
+      <h2 class="my-5 h2 text-center">Payment</h2>
+
+      <div class="row">
+
+        <div class="col-md-12 mb-4">
+          <div class="card">
+
+            {% if card %}
+              <div style="padding: 5px 30px;">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="use_default_card" id="use_default_card">
+                  <label class="custom-control-label" for="use_default_card">Use default card:
+                    **** **** **** {{ card.last4 }} 
+                  <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span></label>
+                </div>
+              </div>
+            {% endif %}
+
+            <div class="current-card-form">
+              <form action="." method="post" class="stripe-form">
+                  {% csrf_token %}
+                  <input type="hidden" name="use_default" value="true">
+                  <div class="stripe-form-row">
+                    <button id="stripeBtn">Submit Payment</button>
+                  </div>
+                  <div id="card-errors" role="alert"></div>
+              </form>
+            </div>
+
+            <div class="new-card-form">
+              <form action="." method="post" class="stripe-form" id="stripe-form">
+                  {% csrf_token %}
+                  <div class="stripe-form-row" id="creditCard">
+                      <label for="card-element" id="stripeBtnLabel">
+                          Credit or debit card
+                      </label>
+                      <div id="card-element" class="StripeElement StripeElement--empty"><div class="__PrivateStripeElement" style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;"><iframe frameborder="0" allowtransparency="true" scrolling="no" name="__privateStripeFrame5" allowpaymentrequest="true" src="https://js.stripe.com/v3/elements-inner-card-19066928f2ed1ba3ffada645e45f5b50.html#style[base][color]=%2332325d&amp;style[base][fontFamily]=%22Helvetica+Neue%22%2C+Helvetica%2C+sans-serif&amp;style[base][fontSmoothing]=antialiased&amp;style[base][fontSize]=16px&amp;style[base][::placeholder][color]=%23aab7c4&amp;style[invalid][color]=%23fa755a&amp;style[invalid][iconColor]=%23fa755a&amp;componentName=card&amp;wait=false&amp;rtl=false&amp;keyMode=test&amp;origin=https%3A%2F%2Fstripe.com&amp;referrer=https%3A%2F%2Fstripe.com%2Fdocs%2Fstripe-js&amp;controllerId=__privateStripeController1" title="Secure payment input frame" style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; height: 19.2px;"></iframe><input class="__PrivateStripeElement-input" aria-hidden="true" aria-label=" " autocomplete="false" maxlength="1" style="border: none !important; display: block !important; position: absolute !important; height: 1px !important; top: 0px !important; left: 0px !important; padding: 0px !important; margin: 0px !important; width: 100% !important; opacity: 0 !important; background: transparent !important; pointer-events: none !important; font-size: 16px !important;"></div></div>
+                  </div>
+                  <div class="stripe-form-row">
+                    <button id="stripeBtn">Submit Payment</button>
+                  </div>
+                  <div class="stripe-form-row">
+                    <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" name="save" id="save_card_info">
+                      <label class="custom-control-label" for="save_card_info">Save for future purchases</label>
+                    </div>
+                  </div>
+                  <div id="card-errors" role="alert"></div>
+              </form>
+            </div>
+
+          </div>
         </div>
+
+        {% include "order_snippet.html" %}
+
       </div>
-      {% include "order_snippet.html" %}
+
     </div>
-  </div>
-</main>
+  </main>
 
 {% endblock content %}
 
 {% block extra_scripts %}
 
-<script>
-  /**
-   * Define the version of the Google Pay API referenced when creating your
-   * configuration
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|apiVersion in PaymentDataRequest}
-   */
-  const baseRequest = {
-    apiVersion: 2,
-    apiVersionMinor: 0
-  };
+<script src="https://js.stripe.com/v3/"></script>
+<script nonce="">  // Create a Stripe client.
+  var stripe = Stripe('{{STRIPE_PUBLIC_KEY}}');
 
-  /**
-   * Card networks supported by your site and your gateway
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
-   * @todo confirm card networks supported by your site and gateway
-   */
-  const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+  // Create an instance of Elements.
+  var elements = stripe.elements();
 
-  /**
-   * Card authentication methods supported by your site and your gateway
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
-   * @todo confirm your processor supports Android device tokens for your
-   * supported card networks
-   */
-  const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
-
-  /**
-   * Identify your gateway and your site's gateway merchant identifier
-   *
-   * The Google Pay API response will return an encrypted payment method capable
-   * of being charged by a supported gateway after payer authorization
-   *
-   * @todo check with your gateway on the parameters to pass
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#gateway|PaymentMethodTokenizationSpecification}
-   */
-  const tokenizationSpecification = {
-    type: 'PAYMENT_GATEWAY',
-    parameters: {
-      'gateway': 'example',
-      'gatewayMerchantId': 'exampleGatewayMerchantId'
-    }
-  };
-
-  /**
-   * Describe your site's support for the CARD payment method and its required
-   * fields
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
-   */
-  const baseCardPaymentMethod = {
-    type: 'CARD',
-    parameters: {
-      allowedAuthMethods: allowedCardAuthMethods,
-      allowedCardNetworks: allowedCardNetworks
-    }
-  };
-
-  /**
-   * Describe your site's support for the CARD payment method including optional
-   * fields
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#CardParameters|CardParameters}
-   */
-  const cardPaymentMethod = Object.assign(
-    {},
-    baseCardPaymentMethod,
-    {
-      tokenizationSpecification: tokenizationSpecification
-    }
-  );
-
-  /**
-   * An initialized google.payments.api.PaymentsClient object or null if not yet set
-   *
-   * @see {@link getGooglePaymentsClient}
-   */
-  let paymentsClient = null;
-
-  /**
-   * Configure your site's support for payment methods supported by the Google Pay
-   * API.
-   *
-   * Each member of allowedPaymentMethods should contain only the required fields,
-   * allowing reuse of this base request when determining a viewer's ability
-   * to pay and later requesting a supported payment method
-   *
-   * @returns {object} Google Pay API version, payment methods supported by the site
-   */
-  function getGoogleIsReadyToPayRequest() {
-    return Object.assign(
-      {},
-      baseRequest,
-      {
-        allowedPaymentMethods: [baseCardPaymentMethod]
+  // Custom styling can be passed to options when creating an Element.
+  // (Note that this demo uses a wider set of styles than the guide below.)
+  var style = {
+    base: {
+      color: '#32325d',
+      fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#aab7c4'
       }
-    );
-  }
-
-  /**
-   * Configure support for the Google Pay API
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#PaymentDataRequest|PaymentDataRequest}
-   * @returns {object} PaymentDataRequest fields
-   */
-  function getGooglePaymentDataRequest() {
-    const paymentDataRequest = Object.assign({}, baseRequest);
-    paymentDataRequest.allowedPaymentMethods = [cardPaymentMethod];
-    paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
-    paymentDataRequest.merchantInfo = {
-      // @todo a merchant ID is available for a production environment after approval by Google
-      // See {@link https://developers.google.com/pay/api/web/guides/test-and-deploy/integration-checklist|Integration checklist}
-      // merchantId: '12345678901234567890',
-      merchantName: 'Example Merchant'
-    };
-    return paymentDataRequest;
-  }
-
-  /**
-   * Return an active PaymentsClient or initialize
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/client#PaymentsClient|PaymentsClient constructor}
-   * @returns {google.payments.api.PaymentsClient} Google Pay API client
-   */
-  function getGooglePaymentsClient() {
-    if (paymentsClient === null) {
-      paymentsClient = new google.payments.api.PaymentsClient({ environment: 'TEST' });
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a'
     }
-    return paymentsClient;
+  };
+
+  // Create an instance of the card Element.
+  var card = elements.create('card', {style: style});
+
+  // Add an instance of the card Element into the `card-element` <div>.
+  card.mount('#card-element');
+
+  // Handle real-time validation errors from the card Element.
+  card.addEventListener('change', function(event) {
+    var displayError = document.getElementById('card-errors');
+    if (event.error) {
+      displayError.textContent = event.error.message;
+    } else {
+      displayError.textContent = '';
+    }
+  });
+
+  // Handle form submission.
+  var form = document.getElementById('stripe-form');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    stripe.createToken(card).then(function(result) {
+      if (result.error) {
+        // Inform the user if there was an error.
+        var errorElement = document.getElementById('card-errors');
+        errorElement.textContent = result.error.message;
+      } else {
+        // Send the token to your server.
+        stripeTokenHandler(result.token);
+      }
+    });
+  });
+
+  // Submit the form with the token ID.
+  function stripeTokenHandler(token) {
+    // Insert the token ID into the form so it gets submitted to the server
+    var form = document.getElementById('stripe-form');
+    var hiddenInput = document.createElement('input');
+    hiddenInput.setAttribute('type', 'hidden');
+    hiddenInput.setAttribute('name', 'stripeToken');
+    hiddenInput.setAttribute('value', token.id);
+    form.appendChild(hiddenInput);
+
+    // Submit the form
+    form.submit();
   }
 
-  /**
-   * Initialize Google PaymentsClient after Google-hosted JavaScript has loaded
-   *
-   * Display a Google Pay payment button after confirmation of the viewer's
-   * ability to pay.
-   */
-  function onGooglePayLoaded() {
-    const paymentsClient = getGooglePaymentsClient();
-    paymentsClient.isReadyToPay(getGoogleIsReadyToPayRequest())
-      .then(function (response) {
-        if (response.result) {
-          addGooglePayButton();
-          // @todo prefetch payment data to improve performance after confirming site functionality
-          // prefetchGooglePaymentData();
-        }
-      })
-      .catch(function (err) {
-        // show error in developer console for debugging
-        console.error(err);
-      });
-  }
+  var currentCardForm = $('.current-card-form');
+  var newCardForm = $('.new-card-form');
+  var use_default_card = document.querySelector("input[name=use_default_card]");
+  use_default_card.addEventListener('change', function() {
+    if (this.checked) {
+      newCardForm.hide();
+      currentCardForm.show()
+    } else {
+      newCardForm.show();
+      currentCardForm.hide()
+    }
+  })
 
-  /**
-   * Add a Google Pay purchase button alongside an existing checkout button
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#ButtonOptions|Button options}
-   * @see {@link https://developers.google.com/pay/api/web/guides/brand-guidelines|Google Pay brand guidelines}
-   */
-  function addGooglePayButton() {
-    const paymentsClient = getGooglePaymentsClient();
-    const button =
-      paymentsClient.createButton({ onClick: onGooglePaymentButtonClicked });
-    document.getElementById('google-pay').appendChild(button);
-  }
+</script>
 
-  /**
-   * Provide Google Pay API with a payment amount, currency, and amount status
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/request-objects#TransactionInfo|TransactionInfo}
-   * @returns {object} transaction info, suitable for use as transactionInfo property of PaymentDataRequest
-   */
-  function getGoogleTransactionInfo() {
-    return {
-      countryCode: 'US',
-      currencyCode: 'USD',
-      totalPriceStatus: 'FINAL',
-      // set to cart total
-      totalPrice: '1.00'
-    };
-  }
-
-  /**
-   * Prefetch payment data to improve performance
-   *
-   * @see {@link https://developers.google.com/pay/api/web/reference/client#prefetchPaymentData|prefetchPaymentData()}
-   */
-  function prefetchGooglePaymentData() {
-    const paymentDataRequest = getGooglePaymentDataRequest();
-    // transactionInfo must be set but does not affect cache
-    paymentDataRequest.transactionInfo = {
-      totalPriceStatus: 'NOT_CURRENTLY_KNOWN',
-      currencyCode: 'USD'
-    };
-    const paymentsClient = getGooglePaymentsClient();
-    paymentsClient.prefetchPaymentData(paymentDataRequest);
-  }
-
-  /**
-   * Show Google Pay payment sheet when Google Pay payment button is clicked
-   */
-  function onGooglePaymentButtonClicked() {
-    const paymentDataRequest = getGooglePaymentDataRequest();
-    paymentDataRequest.transactionInfo = getGoogleTransactionInfo();
-
-    const paymentsClient = getGooglePaymentsClient();
-    paymentsClient.loadPaymentData(paymentDataRequest)
-      .then(function (paymentData) {
-        // handle the response
-        processPayment(paymentData);
-      })
-      .catch(function (err) {
-        // show error in developer console for debugging
-        console.error(err);
-      });
-  }
-  /**
-   * Process payment data returned by the Google Pay API
-   *
-   * @param {object} paymentData response from Google Pay API after user approves payment
-   * @see {@link https://developers.google.com/pay/api/web/reference/response-objects#PaymentData|PaymentData object reference}
-   */
-  function processPayment(paymentData) {
-    // show returned data in developer console for debugging
-    console.log(paymentData);
-    // @todo pass payment token to your gateway to process payment
-    paymentToken = paymentData.paymentMethodData.tokenizationData.token;
-  }</script>
-<script async src="https://pay.google.com/gp/p/js/pay.js" onload="onGooglePayLoaded()"></script>
 {% endblock extra_scripts %}
+
+
