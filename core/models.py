@@ -80,7 +80,7 @@ class Item(models.Model):
 
     def get_remove_from_cart_url(self):
         return reverse("core:remove-from-cart", kwargs={
-            'id': self.id
+            'slug': self.slug
         })
 
 class Comment(models.Model):

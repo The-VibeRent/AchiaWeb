@@ -22,41 +22,7 @@
           <section class="filters">
             <h4 class="font-weight-bold mb-3">Filters</h4>
 
-            <!-- Section: Condition -->
-            <section filter="gender" class="mb-4">
-              <h6 class="font-weight-bold mb-3">Choose</h6>
-
-              <div class="form-check pl-0 mb-3">
-                <input type="checkbox" class="filter-option form-check-input filled-in" gender="men" id="men" />
-                <label class="form-check-label small text-uppercase card-link-secondary" for="men">Men</label>
-              </div>
-              <div class="form-check pl-0 mb-3">
-                <input gender="used" type="checkbox" class="filter-option form-check-input filled-in" id="women" />
-                <label class="form-check-label small text-uppercase card-link-secondary" for="women">Women</label>
-              </div>
-
-            </section>
-            <!-- Section: Condition -->
-
-
-
             <section class="filters">
-
-              <!-- Section: Condition -->
-              <section filter="condition" class="mb-4">
-                <h6 class="font-weight-bold mb-3">Condition</h6>
-
-                <div class="form-check pl-0 mb-3">
-                  <input type="checkbox" class="filter-option form-check-input filled-in" condition="new" id="new" />
-                  <label class="form-check-label small text-uppercase card-link-secondary" for="new">New</label>
-                </div>
-                <div class="form-check pl-0 mb-3">
-                  <input condition="used" type="checkbox" class="filter-option form-check-input filled-in" id="used" />
-                  <label class="form-check-label small text-uppercase card-link-secondary" for="used">Used</label>
-                </div>
-
-              </section>
-              <!-- Section: Condition -->
 
               <!-- Section: Average -->
               <section filter="rating">
@@ -176,35 +142,35 @@
                   <input price="0-25" type="radio" class="filter-option form-check-input" id="under25"
                     name="materialExampleRadios" />
                   <label class="form-check-label small text-uppercase card-link-secondary" for="under25">Under
-                    $25</label>
+                    Rs 25</label>
                 </div>
                 <div class="form-check pl-0 mb-3">
                   <input price="25-50" type="radio" class="filter-option form-check-input" id="2550"
                     name="materialExampleRadios" />
-                  <label class="form-check-label small text-uppercase card-link-secondary" for="2550">$25 to $50</label>
+                  <label class="form-check-label small text-uppercase card-link-secondary" for="2550">Rs 25 to Rs 50</label>
                 </div>
                 <div class="form-check pl-0 mb-3">
                   <input price="50-100" type="radio" class="filter-option form-check-input" id="50100"
                     name="materialExampleRadios" />
-                  <label class="form-check-label small text-uppercase card-link-secondary" for="50100">$50 to
-                    $100</label>
+                  <label class="form-check-label small text-uppercase card-link-secondary" for="50100">Rs 50 to
+                    Rs 100</label>
                 </div>
                 <div class="form-check pl-0 mb-3">
                   <input price="100-200" type="radio" class="filter-option form-check-input" id="100200"
                     name="materialExampleRadios" />
-                  <label class="form-check-label small text-uppercase card-link-secondary" for="100200">$100 to
-                    $200</label>
+                  <label class="form-check-label small text-uppercase card-link-secondary" for="100200">Rs 100 to
+                    Rs 200</label>
                 </div>
                 <div class="form-check pl-0 mb-3">
                   <input price="200-*" type="radio" class="filter-option form-check-input" id="200above"
                     name="materialExampleRadios" />
-                  <label class="form-check-label small text-uppercase card-link-secondary" for="200above">$200 &
+                  <label class="form-check-label small text-uppercase card-link-secondary" for="200above">Rs 200 &
                     Above</label>
                 </div>
               </section>
               <!-- Section: Price -->
 
-              <!-- Section: Size -->
+              <!-- Section: Size 
               <section class="mb-4" filter="size">
                 <h6 class="font-weight-bold mb-3">Size</h6>
 
@@ -246,10 +212,10 @@
                     <label class="form-check-label small text-uppercase card-link-secondary" for="50">50</label>
                   </div>
                 </div>
-              </section>
+              </section>-->
               <!-- Section: Size -->
 
-              <!-- Section: Color -->
+              <!-- Section: Color
               <section class="mb-4" filter="color">
                 <h6 class="font-weight-bold mb-3">Color</h6>
 
@@ -285,7 +251,7 @@
                     <input id="color-10" class="filter-option" type="checkbox" color="orange" />
                   </label>
                 </div>
-              </section>
+              </section> -->
               <!-- Section: Color -->
             </section>
             <!-- Section: Filters -->
@@ -374,11 +340,10 @@
 
 
 {% endblock content %}
-{% block extra_scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-  integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-  crossorigin="anonymous"></script>
 
+
+
+{% block extra_scripts %}
 <script>
 
   // const products = require("../../products.json");
@@ -508,7 +473,7 @@
         <div class="row text-left pt-4">
           <div class="col-8">
             <h5>${product.name}</h5>
-            <p><span class="mr-1"><strong>$${product.price}</strong></span></p>
+            <p><span class="mr-1"><strong>Rs ${product.price}</strong></span></p>
             </div>
             <div class= col-4>
               <a href="/add-to-cart/${product.id}/" class="d-inline-block" data-toggle="tooltip" data-placement="top" title="Add to cart">
