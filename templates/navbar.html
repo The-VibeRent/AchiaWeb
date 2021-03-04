@@ -1,7 +1,6 @@
 {% load static %}
 {% load cart_template_tags %}
 
-{% if request.user.is_authenticated %}
 <nav class="navbar navbar-sticky fixed-top navbar-expand-lg py-2">
   <div class="container">
 
@@ -13,13 +12,8 @@
       <div class="d-flex d-lg-none">
           <ul class="navbar-nav flex-row">
               <li class="nav-item">
-                  <a href="{% url 'account_logout' %}" class="d-flex nav-link" data-show="loginComponent">
-                      <div class="px-2 py-1">Logout</div>
-                  </a>
-              </li>
-              <li class="nav-item">
                   <a href="{% url 'core:order-summary' %}" class="d-flex nav-link">
-                      <div class="px-2 py-1">Cart <sup>{{ request.user|cart_item_count }}</sup></div>
+                      <div class="px-2 py-1">Cart <sup>{{ cart_item_count }}</sup></div>
                   </a>
               </li>
           </ul>
@@ -73,7 +67,7 @@
                   <a href="{% url 'core:order-summary' %}" class="nav-link d-flex">
                       <div class="px-2 py-1">
                           <span class="icon icon-cart"></span>
-                          <sup>{{ request.user|cart_item_count }}</sup>
+                          <sup>{{ cart_item_count }}</sup>
                       </div>
                   </a>
               </li>
@@ -83,72 +77,3 @@
 
   </div>
 </nav>
-
-
-{% else %}
-<nav class="navbar navbar-sticky fixed-top navbar-expand-lg py-2">
-  <div class="container">
-      <a class="navbar-brand text-dark" href="/">
-          <i class="icon icon-layers"></i>
-          <strong>Achia</strong>
-      </a>
-      <div class="d-flex d-lg-none">
-          <ul class="navbar-nav flex-row">
-              <li class="nav-item">
-                  <a href="{% url 'account_login' %}" class="d-flex nav-link">
-                      <div class="px-2 py-1">Login</div>
-                  </a>
-              </li>
-          </ul>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="furnitureNavbar" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="icon icon-menu"></span>
-          </button>
-      </div>
-
-      <!-- Navbar collapse -->
-
-      <div class="navbar-collapse collapse navbar-collapse-sidebar" id="mainNavbar">
-
-          <div class="d-block d-lg-none">
-              <div class="p-3">
-                  <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                          <i class="icon icon-layers"></i>
-                          <strong>Achia</strong>
-                      </div>
-                      <button class="btn p-0" type="button" data-toggle="collapse" data-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                          <span class="icon icon-cross font-size-lg"></span>
-                      </button>
-                  </div>
-              </div>
-          </div>
-
-          <ul class="navbar-nav ml-auto align-items-lg-center">
-              <li class="nav-item active">
-                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item dropdown px-lg-3">
-                  <a class="nav-link dropdown-toggle" href="#" id="dropdown-shop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Shop
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="dropdown-shop">
-                      <a class="dropdown-item" href="#">Shop</a>
-                      <a class="dropdown-item" href="#">Product</a>
-                      <a class="dropdown-item" href="#">Checkout</a>
-                  </div>
-              </li>
-              <li class="nav-item px-lg-3">
-                  <a class="nav-link" href="/collection">Collection</a>
-              </li>
-             
-              <li class="nav-item d-none d-lg-inline ml-lg-5">
-                  <a href="{% url 'account_login' %}" class="nav-link">
-                      <span class="icon icon-user"></span>
-                  </a>
-              </li>
-          </ul>
-      </div>
-
-  </div>
-</nav>
-{% endif %}

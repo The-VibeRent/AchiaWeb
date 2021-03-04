@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserProfile,Banner,Comment
+from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, Customer,Banner,Comment
 
 class ItemResource(resources.ModelResource):
     class Meta:
@@ -16,21 +16,19 @@ make_refund_accepted.short_description = 'Update orders to refund granted'
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['user',
+    list_display = ['customer',
                     'ordered',
                     'being_delivered',
                     'received',
                     'refund_requested',
                     'refund_granted',
                     'shipping_address',
-                    'billing_address',
                     'payment',
                     'coupon'
                     ]
     list_display_links = [
-        'user',
+        'customer',
         'shipping_address',
-        'billing_address',
         'payment',
         'coupon'
     ]
@@ -48,7 +46,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 class AddressAdmin(admin.ModelAdmin):
     list_display = [
-        'user',
+        'customer',
         'street_address',
         'apartment_address',
         'country',
@@ -71,5 +69,5 @@ admin.site.register(Payment)
 admin.site.register(Coupon)
 admin.site.register(Refund)
 admin.site.register(Address, AddressAdmin)
-admin.site.register(UserProfile)
+admin.site.register(Customer)
 admin.site.register(Comment)

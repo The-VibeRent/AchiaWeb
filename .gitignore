@@ -4,3 +4,4 @@ ecommerce/__pycache__/
 ecommerce/settings/__pycache__/
 ecommerce/wsgi/__pycache__/
 *.pyc
+env/

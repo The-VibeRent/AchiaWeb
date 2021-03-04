@@ -4,16 +4,14 @@ import string
 import stripe
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import redirect
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm,CommentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile, Banner
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, CommentForm
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, Customer, Banner
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -36,11 +34,14 @@ def is_valid_form(values):
             valid = False
     return valid
 
+
 class CheckoutView(View):
 
     def get(self, *args, **kwargs):
         try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
+            device = self.request.COOKIES['device']
+            customer = Customer.objects.get(device=device)
+            order = Order.objects.get(customer=customer, ordered=False)
             form = CheckoutForm()
             context = {
                 'form': form,
@@ -48,9 +49,12 @@ class CheckoutView(View):
                 'order': order,
                 'DISPLAY_COUPON_FORM': True
             }
-
+            if customer.phone == None:
+                context.update({
+                    'contact': True
+                })
             shipping_address_qs = Address.objects.filter(
-                user=self.request.user,
+                customer=customer,
                 address_type='S',
                 default=True
             )
@@ -58,14 +62,6 @@ class CheckoutView(View):
                 context.update(
                     {'default_shipping_address': shipping_address_qs[0]})
 
-            billing_address_qs = Address.objects.filter(
-                user=self.request.user,
-                address_type='B',
-                default=True
-            )
-            if billing_address_qs.exists():
-                context.update(
-                    {'default_billing_address': billing_address_qs[0]})
             return render(self.request, "checkout.html", context)
         except ObjectDoesNotExist:
             messages.info(self.request, "You do not have an active order")
@@ -74,15 +70,26 @@ class CheckoutView(View):
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
         try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
+            device = self.request.COOKIES['device']
+            customer = Customer.objects.get(device=device)
+            order = Order.objects.get(customer=customer, ordered=False)
             if form.is_valid():
+
+                if customer.phone == None and is_valid_form([name, email, phone]):
+                    name = form.cleaned_data.get('name')
+                    email = form.cleaned_data.get('email')
+                    phone = form.cleaned_data.get('phone')
+                    customer.name = name
+                    customer.email = email
+                    customer.phone = phone
+                    customer.save()
 
                 use_default_shipping = form.cleaned_data.get(
                     'use_default_shipping')
                 if use_default_shipping:
                     print("Using the defualt shipping address")
                     address_qs = Address.objects.filter(
-                        user=self.request.user,
+                        customer=customer,
                         address_type='S',
                         default=True
                     )
@@ -106,7 +113,7 @@ class CheckoutView(View):
 
                     if is_valid_form([shipping_address1, shipping_country, shipping_zip]):
                         shipping_address = Address(
-                            user=self.request.user,
+                            customer=self.request.user.customer,
                             street_address=shipping_address1,
                             apartment_address=shipping_address2,
                             country=shipping_country,
@@ -123,76 +130,10 @@ class CheckoutView(View):
                         if set_default_shipping:
                             shipping_address.default = True
                             shipping_address.save()
-
                     else:
                         messages.info(
                             self.request, "Please fill in the required shipping address fields")
-
-                use_default_billing = form.cleaned_data.get(
-                    'use_default_billing')
-                same_billing_address = form.cleaned_data.get(
-                    'same_billing_address')
-
-                if same_billing_address:
-                    billing_address = shipping_address
-                    billing_address.pk = None
-                    billing_address.save()
-                    billing_address.address_type = 'B'
-                    billing_address.save()
-                    order.billing_address = billing_address
-                    order.save()
-
-                elif use_default_billing:
-                    print("Using the defualt billing address")
-                    address_qs = Address.objects.filter(
-                        user=self.request.user,
-                        address_type='B',
-                        default=True
-                    )
-                    if address_qs.exists():
-                        billing_address = address_qs[0]
-                        order.billing_address = billing_address
-                        order.save()
-                    else:
-                        messages.info(
-                            self.request, "No default billing address available")
-                        return redirect('core:checkout')
-                else:
-                    print("User is entering a new billing address")
-                    billing_address1 = form.cleaned_data.get(
-                        'billing_address')
-                    billing_address2 = form.cleaned_data.get(
-                        'billing_address2')
-                    billing_country = form.cleaned_data.get(
-                        'billing_country')
-                    billing_zip = form.cleaned_data.get('billing_zip')
-
-                    if is_valid_form([billing_address1, billing_country, billing_zip]):
-                        billing_address = Address(
-                            user=self.request.user,
-                            street_address=billing_address1,
-                            apartment_address=billing_address2,
-                            country=billing_country,
-                            zip=billing_zip,
-                            address_type='B'
-                        )
-                        billing_address.save()
-
-                        order.billing_address = billing_address
-                        order.save()
-
-                        set_default_billing = form.cleaned_data.get(
-                            'set_default_billing')
-                        if set_default_billing:
-                            billing_address.default = True
-                            billing_address.save()
-
-                    else:
-                        messages.info(
-                            self.request, "Please fill in the required billing address fields")
-
                 payment_option = form.cleaned_data.get('payment_option')
-
                 if payment_option == 'S':
                     return redirect('core:payment', payment_option='stripe')
                 elif payment_option == 'P':
@@ -208,14 +149,16 @@ class CheckoutView(View):
 
 class PaymentView(View):
     def get(self, *args, **kwargs):
-        order = Order.objects.get(user=self.request.user, ordered=False)
-        if order.billing_address:
+        device = self.request.COOKIES['device']
+        customer = Customer.objects.get(device=device)
+        order = Order.objects.get(customer=customer, ordered=False)
+        if order.shipping_address:
             context = {
                 'order': order,
                 'DISPLAY_COUPON_FORM': False,
-                'STRIPE_PUBLIC_KEY' : settings.STRIPE_PUBLIC_KEY
+                'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY
             }
-            userprofile = self.request.user.userprofile
+            userprofile = customer
             if userprofile.one_click_purchasing:
                 # fetch the users card list
                 cards = stripe.Customer.list_sources(
@@ -236,9 +179,11 @@ class PaymentView(View):
             return redirect("core:checkout")
 
     def post(self, *args, **kwargs):
-        order = Order.objects.get(user=self.request.user, ordered=False)
+        device = self.request.COOKIES['device']
+        customer = Customer.objects.get(device=device)
+        order = Order.objects.get(customer=customer, ordered=False)
         form = PaymentForm(self.request.POST)
-        userprofile = UserProfile.objects.get(user=self.request.user)
+        userprofile = Customer.objects.get(customer=customer)
         if form.is_valid():
             token = form.cleaned_data.get('stripeToken')
             save = form.cleaned_data.get('save')
@@ -252,7 +197,7 @@ class PaymentView(View):
 
                 else:
                     customer = stripe.Customer.create(
-                        email=self.request.user.email,
+                        email=customer.email,
                     )
                     customer.sources.create(source=token)
                     userprofile.stripe_customer_id = customer['id']
@@ -281,7 +226,7 @@ class PaymentView(View):
                 # create the payment
                 payment = Payment()
                 payment.stripe_charge_id = charge['id']
-                payment.user = self.request.user
+                payment.user = customer
                 payment.amount = order.get_total()
                 payment.save()
 
@@ -349,8 +294,8 @@ class HomeView(ListView):
     model = Item
     template_name = "home.html"
 
-    def get_context_data(self,**kwargs):
-        context = super(HomeView,self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
         context.update({
             'order': OrderItem.objects.all(),
             'primary': Item.objects.all().filter(keywords='P',)[:4],
@@ -359,26 +304,32 @@ class HomeView(ListView):
             'banner': Banner.objects.all()[:3],
         })
         return context
+
     def get_queryset(self):
         return Item.objects.all()
+
 
 class CollectionView(ListView):
     model = Item
     template_name = "collection.html"
 
-    def get_context_data(self,**kwargs):
-        context = super(CollectionView,self).get_context_data(**kwargs)
+    def get_context_data(self, **kwargs):
+        context = super(CollectionView, self).get_context_data(**kwargs)
         context.update({
             'order': OrderItem.objects.all()
         })
         return context
+
     def get_queryset(self):
         return Item.objects.all()
 
-class OrderSummaryView(LoginRequiredMixin, View):
+
+class OrderSummaryView(View):
     def get(self, *args, **kwargs):
         try:
-            order = Order.objects.get(user=self.request.user, ordered=False)
+            device = self.request.COOKIES['device']
+            customer = Customer.objects.get(device=device)
+            order = Order.objects.get(customer=customer, ordered=False)
             context = {
                 'object': order
             }
@@ -388,33 +339,38 @@ class OrderSummaryView(LoginRequiredMixin, View):
             return redirect("/")
 
 
-def ItemDetailView(request,id):
-    item = get_object_or_404(Item, pk=id)
+def ItemDetailView(request, slug):
+    item = get_object_or_404(Item, slug=slug)
     comments = item.comments.filter(active=True)
     new_comment = None
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
-                # Create Comment object but don't save to database yet
+            # Create Comment object but don't save to database yet
             new_comment = comment_form.save(commit=False)
-                # Assign the current post to the comment
+            # Assign the current post to the comment
             new_comment.item = item
-                # Save the comment to the database
+            # Save the comment to the database
             new_comment.save()
     else:
         comment_form = CommentForm()
-    return render(request,'product.html',{'id':id , 'object':item , 'comment':comments , 'new_comment': new_comment , 'comment_form': comment_form })
+    return render(request, 'product.html', {'slug': slug, 'object': item, 'comment': comments, 'new_comment': new_comment, 'comment_form': comment_form})
 
 
-@login_required
 def add_to_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
+    try:
+        customer = request.user.customer
+    except:
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(device=device)
+
     order_item, created = OrderItem.objects.get_or_create(
         item=item,
-        user=request.user,
+        customer=customer,
         ordered=False
     )
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    order_qs = Order.objects.filter(customer=customer, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         # check if the order item is in the order
@@ -430,17 +386,22 @@ def add_to_cart(request, slug):
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
-            user=request.user, ordered_date=ordered_date)
+            customer=customer, ordered_date=ordered_date)
         order.items.add(order_item)
         messages.info(request, "This item was added to your cart.")
         return redirect("core:order-summary")
 
 
-@login_required
 def remove_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
+    try:
+        customer = request.user.customer
+    except:
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(device=device)
+
     order_qs = Order.objects.filter(
-        user=request.user,
+        customer=customer,
         ordered=False
     )
     if order_qs.exists():
@@ -449,7 +410,7 @@ def remove_from_cart(request, slug):
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(
                 item=item,
-                user=request.user,
+                customer=customer,
                 ordered=False
             )[0]
             order.items.remove(order_item)
@@ -464,11 +425,16 @@ def remove_from_cart(request, slug):
         return redirect("core:product", slug=slug)
 
 
-@login_required
 def remove_single_item_from_cart(request, slug):
     item = get_object_or_404(Item, slug=slug)
+    try:
+        customer = request.user.customer
+    except:
+        device = request.COOKIES['device']
+        customer, created = Customer.objects.get_or_create(device=device)
+
     order_qs = Order.objects.filter(
-        user=request.user,
+        customer=customer,
         ordered=False
     )
     if order_qs.exists():
@@ -477,7 +443,7 @@ def remove_single_item_from_cart(request, slug):
         if order.items.filter(item__slug=item.slug).exists():
             order_item = OrderItem.objects.filter(
                 item=item,
-                user=request.user,
+                customer=customer,
                 ordered=False
             )[0]
             if order_item.quantity > 1:
@@ -511,7 +477,7 @@ class AddCouponView(View):
             try:
                 code = form.cleaned_data.get('code')
                 order = Order.objects.get(
-                    user=self.request.user, ordered=False)
+                    customer=self.request.user.customer, ordered=False)
                 order.coupon = get_coupon(self.request, code)
                 order.save()
                 messages.success(self.request, "Successfully added coupon")
