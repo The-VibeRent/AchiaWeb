@@ -44,6 +44,7 @@ class Customer(models.Model):
 	email = models.CharField(max_length=200, null=True, blank=True)
 	phone = models.IntegerField(blank=True,null=True)
 	device = models.CharField(max_length=200, null=True, blank=True)
+	stripe_customer_id = models.CharField(max_length=200,null=True,blank=True)
 	one_click_purchasing = models.BooleanField(default=False)
 
 

@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+<script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
 {% block content %}
   <main>
     <div class="container">
@@ -62,7 +66,7 @@
         </tr>
         <tr>
             <td colspan="5">
-            <a class='btn btn-warning float-right ml-2' href='/checkout/'>Proceed to checkout</a>
+            <a class='btn btn-warning float-right ml-2' id="checkout-button" >Proceed to checkout</a>
             <a class='btn btn-primary float-right' href='/'>Continue shopping</a>
             </td>
         </tr>
@@ -73,6 +77,61 @@
     </div>
 
     </div>
+    {% csrf_token %}
   </main>
 
 {% endblock content %}
+
+
+{% block extra_scripts %}
+
+
+<script type="text/javascript">
+
+    // Create an instance of the Stripe object with your publishable API key
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var stripe = Stripe("{{ STRIPE_PUBLIC_KEY }}");
+
+    var checkoutButton = document.getElementById("checkout-button");
+
+    checkoutButton.addEventListener("click", function () {
+
+      fetch("{% url 'core:create-checkout-session' %}", {
+
+        method: "POST",
+        headers: {
+            'X-CSRFToken': csrftoken
+        }
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (session) {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(function (result) {
+
+          // If redirectToCheckout fails due to a browser or network
+
+          // error, you should display the localized error message to your
+
+          // customer using error.message.
+          if (result.error) {
+            alert(result.error.message);
+
+          }
+
+        })
+
+        .catch(function (error) {
+
+          console.error("Error:", error);
+
+        });
+
+    });
+    document.querySelector("button").disabled = true;
+
+  </script>
+
+{% endblock extra_scripts %}
