@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'bootstrap4',
     'bootstrap3',
     'import_export',
+    'django_filters',
+    'widget_tweaks',
     
     'core',
 ]

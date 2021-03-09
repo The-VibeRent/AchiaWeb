@@ -10,16 +10,12 @@ from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, View
 from django.http import JsonResponse, HttpResponse
-
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, CommentForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, Customer, Banner
 from django.views.generic import TemplateView
 
+from .forms import *
+from .models import *
+
 stripe.api_key = settings.STRIPE_SECRET_KEY
-
-
-def create_ref_code():
-    return ''.join(random.choices(string.ascii_lowercase + string.digits, k=20))
 
 
 def products(request):
@@ -36,157 +32,41 @@ def is_valid_form(values):
             valid = False
     return valid
 
-
-class CheckoutView(View):
-
-    def get(self, *args, **kwargs):
-        try:
-            device = self.request.COOKIES['device']
-            customer = Customer.objects.get(device=device)
-            order = Order.objects.get(customer=customer, ordered=False)
-            form = CheckoutForm()
-            context = {
-                'form': form,
-                'couponform': CouponForm(),
-                'order': order,
-                'DISPLAY_COUPON_FORM': True
-            }
-            if customer.phone == None:
-                context.update({
-                    'contact': True
-                })
-            shipping_address_qs = Address.objects.filter(
-                customer=customer,
-                address_type='S',
-                default=True
-            )
-            if shipping_address_qs.exists():
-                context.update(
-                    {'default_shipping_address': shipping_address_qs[0]})
-
-            return render(self.request, "checkout.html", context)
-        except ObjectDoesNotExist:
-            messages.info(self.request, "You do not have an active order")
-            return redirect("core:checkout")
-
-    def post(self, *args, **kwargs):
-        form = CheckoutForm(self.request.POST or None)
-        try:
-            device = self.request.COOKIES['device']
-            customer = Customer.objects.get(device=device)
-            order = Order.objects.get(customer=customer, ordered=False)
-            if form.is_valid():
-
-                name = form.cleaned_data.get('name')
-                email = form.cleaned_data.get('email')
-                phone = form.cleaned_data.get('phone')
-                if customer.phone == None and is_valid_form([name, email, phone]):
-                    customer.name = name
-                    customer.email = email
-                    customer.phone = phone
-                    customer.save()
-
-                use_default_shipping = form.cleaned_data.get(
-                    'use_default_shipping')
-                if use_default_shipping:
-                    print("Using the defualt shipping address")
-                    address_qs = Address.objects.filter(
-                        customer=customer,
-                        address_type='S',
-                        default=True
-                    )
-                    if address_qs.exists():
-                        shipping_address = address_qs[0]
-                        order.shipping_address = shipping_address
-                        order.save()
-                    else:
-                        messages.info(
-                            self.request, "No default shipping address available")
-                        return redirect('core:checkout')
-                else:
-                    print("User is entering a new shipping address")
-                    shipping_address1 = form.cleaned_data.get(
-                        'shipping_address')
-                    shipping_address2 = form.cleaned_data.get(
-                        'shipping_address2')
-                    shipping_country = form.cleaned_data.get(
-                        'shipping_country')
-                    shipping_zip = form.cleaned_data.get('shipping_zip')
-
-                    if is_valid_form([shipping_address1, shipping_country, shipping_zip]):
-                        shipping_address = Address(
-                            customer=customer,
-                            street_address=shipping_address1,
-                            apartment_address=shipping_address2,
-                            country=shipping_country,
-                            zip=shipping_zip,
-                            address_type='S'
-                        )
-                        shipping_address.save()
-
-                        order.shipping_address = shipping_address
-                        order.save()
-
-                        set_default_shipping = form.cleaned_data.get(
-                            'set_default_shipping')
-                        if set_default_shipping:
-                            shipping_address.default = True
-                            shipping_address.save()
-                    else:
-                        messages.info(
-                            self.request, "Please fill in the required shipping address fields")
-                payment_option = form.cleaned_data.get('payment_option')
-                if payment_option == 'S':
-                    return redirect('core:payment', payment_option='stripe')
-                elif payment_option == 'P':
-                    return redirect('core:payment', payment_option='paypal')
-                else:
-                    messages.warning(
-                        self.request, "Invalid payment option selected")
-                    return redirect('core:checkout')
-        except ObjectDoesNotExist:
-            messages.warning(self.request, "You do not have an active order")
-            return redirect("core:order-summary")
-
 class CreateCheckoutSessionView(View):
     def post(self, request, *args, **kwargs):
         device = self.request.COOKIES['device']
         customer = Customer.objects.get(device=device)
         order = Order.objects.get(customer=customer, ordered=False)
-        YOUR_DOMAIN = "http://127.0.0.1:8000"
+        YOUR_DOMAIN = "http://192.168.43.159:8000"
         checkout_session = stripe.checkout.Session.create(
+            billing_address_collection='auto',
+            shipping_address_collection={'allowed_countries': ['IN'],},
             payment_method_types=['card'],
-            line_items=[
-                {
-                    'price_data': {
-                        'currency': 'inr',
-                        'unit_amount': int(order.get_total()*100),
-                    'product_data': {
-                            'name': customer.name,
-                            # 'images': ['https://i.imgur.com/EHyR2nP.png'],
-                        },
-                    },
-                    'quantity': 1,
-                },
-            ],
+            line_items = order.get_list(),
             metadata={
-                
+                'id':str(customer.device),
             },
             mode='payment',
             success_url=YOUR_DOMAIN + '/success/',
-            cancel_url=YOUR_DOMAIN + '/cancel/',
+            cancel_url=YOUR_DOMAIN + '/order-summary/',
         )
         return JsonResponse({
             'id': checkout_session.id
         })
 
-class SuccessView(TemplateView):
-    template_name = "success.html"
+def payment_success(request):
+    device = request.COOKIES['device']
+    customer = Customer.objects.get(device=device)
+    order = Order.objects.get(customer=customer,ordered=False)
+    order.items.ordered=True
+    order.ordered=True
+    order.save()
+    messages.success(request, "Your orderd is successfully placed. You will recive a Mail shortly!")
+    return redirect('core:home')
 
-
-class CancelView(TemplateView):
-    template_name = "cancel.html"
-
+def payment_cancel(request):
+    messages.error(request, "Your orderd is intruppted. May be due to network issues.")
+    return redirect('core:order-summary')
 
 class HomeView(ListView):
     model = Item
@@ -358,64 +238,3 @@ def remove_single_item_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order")
         return redirect("core:product", slug=slug)
-
-
-def get_coupon(request, code):
-    try:
-        coupon = Coupon.objects.get(code=code)
-        return coupon
-    except ObjectDoesNotExist:
-        messages.info(request, "This coupon does not exist")
-        return redirect("core:checkout")
-
-
-class AddCouponView(View):
-    def post(self, *args, **kwargs):
-        form = CouponForm(self.request.POST or None)
-        if form.is_valid():
-            try:
-                code = form.cleaned_data.get('code')
-                order = Order.objects.get(
-                    customer=self.request.user.customer, ordered=False)
-                order.coupon = get_coupon(self.request, code)
-                order.save()
-                messages.success(self.request, "Successfully added coupon")
-                return redirect("core:checkout")
-            except ObjectDoesNotExist:
-                messages.info(self.request, "You do not have an active order")
-                return redirect("core:checkout")
-
-
-class RequestRefundView(View):
-    def get(self, *args, **kwargs):
-        form = RefundForm()
-        context = {
-            'form': form
-        }
-        return render(self.request, "request_refund.html", context)
-
-    def post(self, *args, **kwargs):
-        form = RefundForm(self.request.POST)
-        if form.is_valid():
-            ref_code = form.cleaned_data.get('ref_code')
-            message = form.cleaned_data.get('message')
-            email = form.cleaned_data.get('email')
-            # edit the order
-            try:
-                order = Order.objects.get(ref_code=ref_code)
-                order.refund_requested = True
-                order.save()
-
-                # store the refund
-                refund = Refund()
-                refund.order = order
-                refund.reason = message
-                refund.email = email
-                refund.save()
-
-                messages.info(self.request, "Your request was received.")
-                return redirect("core:request-refund")
-
-            except ObjectDoesNotExist:
-                messages.info(self.request, "This order does not exist.")
-                return redirect("core:request-refund")

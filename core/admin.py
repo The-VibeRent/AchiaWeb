@@ -1,7 +1,7 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources
-from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, Customer,Banner,Comment
+from .models import *
 
 class ItemResource(resources.ModelResource):
     class Meta:
@@ -22,21 +22,15 @@ class OrderAdmin(admin.ModelAdmin):
                     'received',
                     'refund_requested',
                     'refund_granted',
-                    'shipping_address',
                     'payment',
-                    'coupon'
                     ]
     list_display_links = [
         'customer',
-        'shipping_address',
         'payment',
-        'coupon'
     ]
     list_filter = ['ordered',
                    'being_delivered',
-                   'received',
-                   'refund_requested',
-                   'refund_granted']
+                   'received',]
     search_fields = [
         'user__username',
         'ref_code'
@@ -44,18 +38,6 @@ class OrderAdmin(admin.ModelAdmin):
     actions = [make_refund_accepted]
 
 
-class AddressAdmin(admin.ModelAdmin):
-    list_display = [
-        'customer',
-        'street_address',
-        'apartment_address',
-        'country',
-        'zip',
-        'address_type',
-        'default'
-    ]
-    list_filter = ['default', 'address_type', 'country']
-    search_fields = ['user', 'street_address', 'apartment_address', 'zip']
 
 
 @admin.register(Item)
@@ -65,9 +47,7 @@ class ItemAdmin(ImportExportModelAdmin):
 admin.site.register(Banner)
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
-admin.site.register(Payment)
-admin.site.register(Coupon)
-admin.site.register(Refund)
-admin.site.register(Address, AddressAdmin)
 admin.site.register(Customer)
 admin.site.register(Comment)
+admin.site.register(Category)
+admin.site.register(Size)
