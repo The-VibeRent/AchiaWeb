@@ -65,7 +65,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ecommerce.wsgi.dev.application'
 
 
 # Database

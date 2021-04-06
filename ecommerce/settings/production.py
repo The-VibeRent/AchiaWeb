@@ -11,6 +11,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
 ]
 
+WSGI_APPLICATION = 'ecommerce.wsgi.prod.application'
+
 DATABASES = {
     'default': dj_database_url.config(
         default=config('DATABASE_URL')
