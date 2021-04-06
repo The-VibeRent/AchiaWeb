@@ -6,7 +6,7 @@ from decouple import config
 BASE_DIR = os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))
 
-SECRET_KEY = 'oed+ke0y532n2++hq3dz07ow%3ufp)z7pd@p(xhyy@ju+o))q_'
+SECRET_KEY = config('SECRET_KEY', default='oed+ke0y532n2++hq3dz07ow%3ufp)z7pd@p(xhyy@ju+o))q_')
 
 # Application definition
 
