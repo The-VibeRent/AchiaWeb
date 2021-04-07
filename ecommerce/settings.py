@@ -3,10 +3,16 @@ import os
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = config('SECRET_KEY', default='oed+ke0y532n2++hq3dz07ow%3ufp)z7pd@p(xhyy@ju+o))q_')
 
+DEBUG = config('DEBUG', cast=bool)
+
+if DEBUG:
+    ALLOWED_HOSTS = ['127.0.0.1', '192.168.43.159']
+else:
+    ALLOWED_HOSTS = ['.herokuapp.com']
 # Application definition
 
 INSTALLED_APPS = [
@@ -47,6 +53,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ecommerce.urls'
 
+WSGI_APPLICATION = 'ecommerce.wsgi.application'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -69,7 +77,22 @@ TEMPLATES = [
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+import dj_database_url
 
+
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=config('DATABASE_URL')
+        )
+    }
 
 
 # Password validation
@@ -129,3 +152,15 @@ LOGIN_REDIRECT_URL = '/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_PROFILE_MODULE = 'accounts.Customer'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
+if DEBUG:
+    STRIPE_PUBLIC_KEY = config('STRIPE_TEST_PUBLIC_KEY')
+    STRIPE_SECRET_KEY = config('STRIPE_TEST_SECRET_KEY')
+else:
+    STRIPE_PUBLIC_KEY = config('STRIPE_LIVE_PUBLIC_KEY')
+    STRIPE_SECRET_KEY = config('STRIPE_LIVE_SECRET_KEY')
